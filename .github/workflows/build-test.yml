@@ -124,14 +124,27 @@ jobs:
       with:
         ipfs_version: ^0.8
 
-    - name: Pin testing data
+    - name: Prepare testing data to pin on IPFS
+      run: |
+        mkdir itk-wasm-testing-data
+        rsync -v -r --exclude=Objects --exclude='*-hash-stamp' ./build/ExternalData/ ./itk-wasm-testing-data/
+
+    - name: Pin testing data on web3.storage
+      uses: web3-storage/add-to-web3@v1
+      id: web3
+      with:
+        web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
+        path_to_add: 'itk-wasm-testing-data'
+
+    - name: Pin testing data on Pinata
       if: github.ref == 'refs/heads/master'
       env:
         PINATA_JWT: ${{ secrets.PINATA_JWT }}
       run: |
         mkdir itk-wasm-testing-data
         rsync -v -r --exclude=Objects --exclude='*-hash-stamp' ./build/ExternalData/ ./itk-wasm-testing-data/
-        new_cid=$(ipfs add -r -Q --cid-version 1 --raw-leaves itk-wasm-testing-data)
+        echo "IPFS testing data: ${{ steps.web3.outputs.url }}"
+        new_cid=${{ steps.web3.outputs.cid }}
 
         ipfs pin remote service add pinata https://api.pinata.cloud/psa "$PINATA_JWT"
         if test $(ipfs pin remote ls --service=pinata --name=itk-wasm-testing-data --cid=$new_cid | wc -l) -lt 1; then
