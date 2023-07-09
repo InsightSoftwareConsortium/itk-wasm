@@ -28,11 +28,18 @@ set -- "${newparams[@]}"  # overwrites the original positional params
 wasi_ld_flags="-flto -lwasi-emulated-process-clocks -lwasi-emulated-signal -lc-printscan-long-double"
 wasi_c_flags="-flto -msimd128 -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL"
 
+wasi_threads_ld_flags="${wasi_ld_flags} -Wl,--import-memory -Wl,--export-memory"
+wasi_threads_c_flags="${wasi_c_flags} -pthread"
+
 emscripten_debug_ld_flags="-fno-lto -s ALLOW_MEMORY_GROWTH=1"
 emscripten_debug_c_flags="-fno-lto -Wno-warn-absolute-paths"
 
 wasi_debug_ld_flags="-fno-lto -lwasi-emulated-process-clocks -lwasi-emulated-signal -lc-printscan-long-double"
 wasi_debug_c_flags="-fno-lto -D_WASI_EMULATED_PROCESS_CLOCKS -D_WASI_EMULATED_SIGNAL"
+
+wasi_threads_debug_ld_flags="${wasi_debug_ld_flags} -Wl,--import-memory -Wl,--export-memory"
+wasi_threads_debug_c_flags="${wasi_debug_c_flags} -pthread"
+
 
 docker build -t itkwasm/emscripten-base:latest \
         --build-arg IMAGE=itkwasm/emscripten-base \
@@ -74,6 +81,32 @@ if $wasi; then
                         --build-arg BASE_IMAGE=dockcross/web-wasi \
                         --build-arg LDFLAGS="${wasi_ld_flags}" \
                         --build-arg CFLAGS="${wasi_c_flags}" \
+                        $script_dir $@
+        fi
+
+  docker build -t itkwasm/wasi-threads-base:latest \
+          --build-arg IMAGE=itkwasm/wasi-threads-base \
+          --build-arg CMAKE_BUILD_TYPE=Release \
+          --build-arg VCS_REF=${VCS_REF} \
+          --build-arg VCS_URL=${VCS_URL} \
+          --build-arg BUILD_DATE=${BUILD_DATE} \
+          --build-arg BASE_IMAGE=dockcross/web-wasi \
+          --build-arg LDFLAGS="${wasi_threads_ld_flags}" \
+          --build-arg CFLAGS="${wasi_threads_c_flags}" \
+          --build-arg CROSS_TRIPLE="wasm32-wasi-threads" \
+          $script_dir $@
+        if $version_tag; then
+                docker build -t itkwasm/wasi-threads-base:${TAG} \
+                        --build-arg IMAGE=itkwasm/wasi-threads-base \
+                        --build-arg CMAKE_BUILD_TYPE=Release \
+                        --build-arg VERSION=${TAG} \
+                        --build-arg VCS_REF=${VCS_REF} \
+                        --build-arg VCS_URL=${VCS_URL} \
+                        --build-arg BUILD_DATE=${BUILD_DATE} \
+                        --build-arg BASE_IMAGE=dockcross/web-wasi \
+                        --build-arg LDFLAGS="${wasi_threads_ld_flags}" \
+                        --build-arg CFLAGS="${wasi_threads_c_flags}" \
+                        --build-arg CROSS_TRIPLE="wasm32-wasi-threads" \
                         $script_dir $@
         fi
 fi
@@ -125,6 +158,32 @@ if $debug; then
                 --build-arg BASE_IMAGE=dockcross/web-wasi \
                 --build-arg LDFLAGS="${wasi_debug_ld_flags}" \
                 --build-arg CFLAGS="${wasi_debug_c_flags}" \
+                $script_dir $@
+    fi
+
+    docker build -t itkwasm/wasi-threads-base:latest-debug \
+            --build-arg IMAGE=itkwasm/wasi-threads-base \
+            --build-arg CMAKE_BUILD_TYPE=Debug \
+            --build-arg VCS_REF=${VCS_REF} \
+            --build-arg VCS_URL=${VCS_URL} \
+            --build-arg BUILD_DATE=${BUILD_DATE} \
+            --build-arg BASE_IMAGE=dockcross/web-wasi \
+            --build-arg LDFLAGS="${wasi_threads_debug_ld_flags}" \
+            --build-arg CFLAGS="${wasi_threads_debug_c_flags}" \
+            --build-arg CROSS_TRIPLE="wasm32-wasi-threads" \
+            $script_dir $@
+    if $version_tag; then
+        docker build -t itkwasm/wasi-threads-base:${TAG}-debug \
+                --build-arg IMAGE=itkwasm/wasi-threads-base \
+                --build-arg CMAKE_BUILD_TYPE=Debug \
+                --build-arg VERSION=${TAG} \
+                --build-arg VCS_REF=${VCS_REF} \
+                --build-arg VCS_URL=${VCS_URL} \
+                --build-arg BUILD_DATE=${BUILD_DATE} \
+                --build-arg BASE_IMAGE=dockcross/web-wasi \
+                --build-arg LDFLAGS="${wasi_threads_debug_ld_flags}" \
+                --build-arg CFLAGS="${wasi_threads_debug_c_flags}" \
+                --build-arg CROSS_TRIPLE="wasm32-wasi-threads" \
                 $script_dir $@
     fi
   fi
