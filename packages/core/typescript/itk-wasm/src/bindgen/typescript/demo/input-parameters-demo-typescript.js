@@ -117,7 +117,7 @@ function inputParametersDemoTypeScript(functionName, indent, parameter, required
           result += `${indent}${indent}webWorker.terminate()\n`
           result += `${indent}${indent}model.${modelProperty}.set("${parameterName}", image)\n`
           result += `${indent}${indent}const details = document.getElementById("${functionName}-${parameter.name}-details")\n`
-          result += `${indent}${indent}details.innerHTML = \`<pre>$\{globalThis.escapeHtml(JSON.stringify(image, globalThis.interfaceTypeJsonReplacer, 2))}</pre>\`\n`
+          result += `${indent}${indent}loadImage(image, details)\n`
         }
       } else if (parameterType === 'INPUT_MESH') {
         if (parameter.itemsExpectedMax > 1) {

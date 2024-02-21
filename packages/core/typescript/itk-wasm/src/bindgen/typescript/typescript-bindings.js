@@ -314,6 +314,10 @@ export * from './index-node-only.js'
     // dark mode
     document.documentElement.classList.add('sl-theme-dark');
   }
+
+  import '@shoelace-style/shoelace/dist/components/range/range.js';
+  import '@shoelace-style/shoelace/dist/components/card/card.js';
+  import '@itk-viewer/element/itk-viewer-2d.js'
 </script>
 `
     demoIndexContent = demoIndexContent.replaceAll(
