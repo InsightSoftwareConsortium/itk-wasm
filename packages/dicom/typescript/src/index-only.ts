@@ -66,3 +66,13 @@ export { readImageDicomFileSeries }
 
 import readImageDicomFileSeriesWorkerFunction from './read-image-dicom-file-series-worker-function.js'
 export { readImageDicomFileSeriesWorkerFunction }
+
+
+import SortDicomSeriesResult from "./sort-dicom-series-result.js";
+export type { SortDicomSeriesResult };
+
+import SortDicomSeriesOptions from "./sort-dicom-series-options.js";
+export type { SortDicomSeriesOptions };
+
+import sortDicomSeries from "./sort-dicom-series.js";
+export { sortDicomSeries };

@@ -60,3 +60,13 @@ export type { ReadImageDicomFileSeriesNodeOptions }
 
 import readImageDicomFileSeriesNode from './read-image-dicom-file-series-node.js'
 export { readImageDicomFileSeriesNode }
+
+
+import SortDicomSeriesNodeResult from './sort-dicom-series-node-result.js'
+export type { SortDicomSeriesNodeResult }
+
+import SortDicomSeriesNodeOptions from './sort-dicom-series-node-options.js'
+export type { SortDicomSeriesNodeOptions }
+
+import sortDicomSeriesNode from './sort-dicom-series-node.js'
+export { sortDicomSeriesNode }
