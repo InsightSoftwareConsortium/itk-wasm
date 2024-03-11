@@ -18,7 +18,7 @@ export default defineConfig({
     format: 'es'
   },
   optimizeDeps: {
-    exclude: ['itk-wasm', '@itk-wasm/image-io', '@thewtex/zstddec', 'comlink', 'wasm-feature-detect', 'axios']
+    exclude: ['itk-wasm', '@itk-wasm/image-io', '@thewtex/zstddec', 'comlink', 'wasm-feature-detect', 'axios', 'itk-viewer/io']
   },
   plugins: [
     // put lazy loaded JavaScript and Wasm bundles in dist directory

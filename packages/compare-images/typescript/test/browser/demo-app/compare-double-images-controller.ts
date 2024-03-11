@@ -47,7 +47,7 @@ class CompareDoubleImagesController {
         webWorker.terminate()
         model.inputs.set("testImage", image)
         const details = document.getElementById("compareDoubleImages-test-image-details")
-        details.innerHTML = `<pre>${globalThis.escapeHtml(JSON.stringify(image, globalThis.interfaceTypeJsonReplacer, 2))}</pre>`
+        loadImage(image, details)
         details.disabled = false
     })
 
@@ -192,7 +192,7 @@ class CompareDoubleImagesController {
         const differenceImageDetails = document.getElementById("compareDoubleImages-difference-image-details")
         differenceImageDetails.innerHTML = `<pre>${globalThis.escapeHtml(JSON.stringify(differenceImage, globalThis.interfaceTypeJsonReplacer, 2))}</pre>`
         differenceImageDetails.disabled = false
-        const differenceImageOutput = document.getElementById('compareDoubleImages-difference-image-details')
+        loadImage(differenceImage, differenceImageDetails)
 
         model.outputs.set("differenceUchar2dImage", differenceUchar2dImage)
         differenceUchar2dImageOutputDownload.variant = "success"
@@ -200,7 +200,7 @@ class CompareDoubleImagesController {
         const differenceUchar2dImageDetails = document.getElementById("compareDoubleImages-difference-uchar-2d-image-details")
         differenceUchar2dImageDetails.innerHTML = `<pre>${globalThis.escapeHtml(JSON.stringify(differenceUchar2dImage, globalThis.interfaceTypeJsonReplacer, 2))}</pre>`
         differenceUchar2dImageDetails.disabled = false
-        const differenceUchar2dImageOutput = document.getElementById('compareDoubleImages-difference-uchar-2d-image-details')
+        loadImage(differenceUchar2dImage, differenceUchar2dImageDetails)
       } catch (error) {
         globalThis.notify("Error while running pipeline", error.toString(), "danger", "exclamation-octagon")
         throw error
