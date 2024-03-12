@@ -1,6 +1,6 @@
 {
   "name": "@itk-wasm/compress-stringify",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "packageManager": "pnpm@8.11.0",
   "description": "Zstandard compression and decompression and base64 encoding and decoding in WebAssembly.",
   "type": "module",

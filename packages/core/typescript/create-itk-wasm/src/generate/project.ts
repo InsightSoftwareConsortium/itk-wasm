@@ -53,6 +53,18 @@ function generateProject(
 
   if (verbose) {
     console.log(chalk.cyanBright('💖 Finished.'))
+    console.log(
+      `${chalk.cyanBright('\n📂  Directory:   ')} ${project.directory}`
+    )
+    console.log(`${chalk.cyanBright('📦  Name:        ')} ${project.name}`)
+    console.log(
+      `${chalk.cyanBright('📄  Description: ')} ${project.packageDescription}`
+    )
+    console.log(chalk.magentaBright(`\n🚀  Next steps:`))
+    console.log(chalk.green(`\ncd ${project.directory}`))
+    console.log(chalk.green(`pnpm install`))
+    console.log(chalk.green(`pnpm build`))
+    console.log(chalk.green(`pnpm test\n`))
   }
 }
 

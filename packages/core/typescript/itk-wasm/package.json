@@ -1,6 +1,6 @@
 {
   "name": "itk-wasm",
-  "version": "1.0.0-b.170",
+  "version": "1.0.0-b.171",
   "packageManager": "pnpm@8.11.0",
   "description": "High-performance spatial analysis in a web browser, Node.js, and reproducible execution across programming languages and hardware architectures.",
   "type": "module",

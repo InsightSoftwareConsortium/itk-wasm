@@ -97,7 +97,7 @@ async function runPipeline (
     const pipelineModule = await loadPipelineModule(
       pipelinePath.toString(),
       options?.pipelineBaseUrl,
-      options?.pipelineQueryParams ?? defaultPipelinesQueryParams(),
+      options?.pipelineQueryParams ?? defaultPipelinesQueryParams()
     )
     const result = runPipelineEmscripten(pipelineModule, args, outputs, inputs)
     return result
@@ -108,7 +108,7 @@ async function runPipeline (
   const { workerProxy, worker: usedWorker } = await createWorkerProxy(
     worker as Worker | null,
     pipelineWorkerUrlString as string | undefined | null,
-    options?.pipelineQueryParams ?? defaultPipelinesQueryParams(),
+    options?.pipelineQueryParams ?? defaultPipelinesQueryParams()
   )
   worker = usedWorker
   const transferables: Array<ArrayBuffer | TypedArray | null> = []

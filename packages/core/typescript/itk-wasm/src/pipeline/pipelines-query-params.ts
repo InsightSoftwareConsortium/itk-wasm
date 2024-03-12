@@ -1,4 +1,4 @@
-import RunPipelineOptions from "./run-pipeline-options"
+import RunPipelineOptions from './run-pipeline-options'
 
 let pipelinesQueryParams: RunPipelineOptions['pipelineQueryParams'] | undefined
 

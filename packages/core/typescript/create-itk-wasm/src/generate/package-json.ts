@@ -59,7 +59,7 @@ function generatePackageJson(project: ProjectSpec) {
     devDependencies: {
       '@itk-wasm/dam': '^1.1.1',
       '@thewtex/setup-micromamba': '^1.9.7',
-      'itk-wasm': '1.0.0-b.169'
+      'itk-wasm': '1.0.0-b.171'
     }
   }
   if (project.author) {
