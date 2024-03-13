@@ -5,4 +5,3 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(gdcm)
 add_subdirectory(dcmtk)
-add_subdirectory(sort-dicom-series)

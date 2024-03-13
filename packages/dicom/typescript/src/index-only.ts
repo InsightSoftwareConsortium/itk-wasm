@@ -68,11 +68,12 @@ import readImageDicomFileSeriesWorkerFunction from './read-image-dicom-file-seri
 export { readImageDicomFileSeriesWorkerFunction }
 
 
-import SortDicomSeriesResult from "./sort-dicom-series-result.js";
-export type { SortDicomSeriesResult };
 
-import SortDicomSeriesOptions from "./sort-dicom-series-options.js";
-export type { SortDicomSeriesOptions };
+import ImageSetsNormalizationResult from './image-sets-normalization-result.js'
+export type { ImageSetsNormalizationResult }
 
-import sortDicomSeries from "./sort-dicom-series.js";
-export { sortDicomSeries };
+import ImageSetsNormalizationOptions from './image-sets-normalization-options.js'
+export type { ImageSetsNormalizationOptions }
+
+import imageSetsNormalization from './image-sets-normalization.js'
+export { imageSetsNormalization }

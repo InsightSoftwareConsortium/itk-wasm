@@ -25,28 +25,28 @@
 
 int main(int argc, char *argv[])
 {
-  itk::wasm::Pipeline pipeline("sort-dicom-series", "Group DICOM files into volumes", argc, argv);
+  itk::wasm::Pipeline pipeline("image-sets-normalization", "Group DICOM files into image sets", argc, argv);
 
   std::vector<std::string> files;
-  pipeline.add_option("--files", files, "DICOM files to group")->required()->check(CLI::ExistingFile)->type_size(1, -1)->type_name("INPUT_BINARY_FILE");
+  pipeline.add_option("--files", files, "DICOM files")->required()->check(CLI::ExistingFile)->type_size(1, -1)->type_name("INPUT_BINARY_FILE");
 
-  itk::wasm::OutputTextStream volumes;
-  pipeline.add_option("volumes", volumes, "Files grouped into volumes")->required()->type_name("OUTPUT_JSON");
+  itk::wasm::OutputTextStream imageSetsMetadata;
+  pipeline.add_option("image-sets-metadata", imageSetsMetadata, "Image sets JSON")->required()->type_name("OUTPUT_JSON");
 
   ITK_WASM_PARSE(pipeline);
 
-  rapidjson::Document volumesJson;
-  volumesJson.SetObject();
-  rapidjson::Document::AllocatorType &allocator = volumesJson.GetAllocator();
+  rapidjson::Document imageSetsJson;
+  imageSetsJson.SetObject();
+  rapidjson::Document::AllocatorType &allocator = imageSetsJson.GetAllocator();
 
   rapidjson::Value almostEqualValue;
   almostEqualValue.SetBool(false);
-  volumesJson.AddMember("almostEqual", almostEqualValue, allocator);
+  imageSetsJson.AddMember("", almostEqualValue, allocator);
 
   rapidjson::StringBuffer stringBuffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(stringBuffer);
-  volumesJson.Accept(writer);
-  volumes.Get() << stringBuffer.GetString();
+  imageSetsJson.Accept(writer);
+  imageSetsMetadata.Get() << stringBuffer.GetString();
 
   return EXIT_SUCCESS;
 }

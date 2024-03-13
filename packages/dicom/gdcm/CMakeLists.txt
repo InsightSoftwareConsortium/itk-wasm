@@ -63,6 +63,22 @@ add_dependencies(${Iconv} ${Iconv_LIBRARY})
 add_executable(read-dicom-tags read-dicom-tags.cxx)
 target_link_libraries(read-dicom-tags PUBLIC ${ITK_LIBRARIES} ${Iconv_LIBRARIES} ${Iconv})
 
+
+add_executable(image-sets-normalization image-sets-normalization.cxx)
+target_link_libraries(image-sets-normalization PUBLIC ${ITK_LIBRARIES})
+
+enable_testing()
+
+add_test(NAME image-sets-normalization-help COMMAND image-sets-normalization --help)
+
+add_test(NAME image-sets-normalization-smoke
+  COMMAND image-sets-normalization image-sets.json --files
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/data/input/DicomImageOrientationTest/ImageOrientation.1.dcm
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/data/input/DicomImageOrientationTest/ImageOrientation.2.dcm
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/data/input/DicomImageOrientationTest/ImageOrientation.3.dcm
+)
+
+
 if (EMSCRIPTEN)
   foreach(dicom_io_module
       read-image-dicom-file-series

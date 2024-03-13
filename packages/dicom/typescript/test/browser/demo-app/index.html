@@ -62,6 +62,7 @@
     <sl-tab slot="nav" panel="readDicomEncapsulatedPdf-panel">readDicomEncapsulatedPdf</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToHtml-panel">structuredReportToHtml</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToText-panel">structuredReportToText</sl-tab>
+    <sl-tab slot="nav" panel="imageSetsNormalization-panel">imageSetsNormalization</sl-tab>
     <sl-tab slot="nav" panel="readDicomTags-panel">readDicomTags</sl-tab>
     <sl-tab slot="nav" panel="readImageDicomFileSeries-panel">readImageDicomFileSeries</sl-tab>
 
@@ -342,6 +343,30 @@ by Specific Character Set (0008,0005) to UTF-8</i></sl-checkbox>
     <div id="structuredReportToTextOutputs">
       <sl-details disabled id="structuredReportToText-output-text-details" summary="outputText: Output text file"></sl-details>
       <sl-button variant="neutral" outline name="output-text-download" disabled>Download</sl-button>
+<br /><br />
+    </div>
+
+    </sl-tab-panel>
+
+
+    <sl-tab-panel name="imageSetsNormalization-panel">
+
+    <small><i>Group DICOM files into image sets</i></small><br /><br />
+
+    <div id="imageSetsNormalizationInputs"><form action="">
+      <sl-tooltip content="Use the Upload button to provide the files"><sl-details id="imageSetsNormalization-files-details" summary="files: DICOM files" disabled></sl-details></sl-tooltip>
+      <label for="files-file"><sl-button name="files-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file" multiple  name="files-file" style="display: none"/>
+<br /><br />
+    <sl-divider></sl-divider>
+      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
+      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
+
+    </form></div>
+    <sl-divider></sl-divider>
+
+    <div id="imageSetsNormalizationOutputs">
+      <sl-details disabled id="imageSetsNormalization-image-sets-metadata-details" summary="imageSetsMetadata: Image sets JSON"></sl-details>
+      <sl-button variant="neutral" outline name="image-sets-metadata-download" disabled>Download</sl-button>
 <br /><br />
     </div>
 
