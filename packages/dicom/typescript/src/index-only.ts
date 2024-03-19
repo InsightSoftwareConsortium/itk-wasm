@@ -66,3 +66,14 @@ export { readImageDicomFileSeries }
 
 import readImageDicomFileSeriesWorkerFunction from './read-image-dicom-file-series-worker-function.js'
 export { readImageDicomFileSeriesWorkerFunction }
+
+
+
+import ImageSetsNormalizationResult from './image-sets-normalization-result.js'
+export type { ImageSetsNormalizationResult }
+
+import ImageSetsNormalizationOptions from './image-sets-normalization-options.js'
+export type { ImageSetsNormalizationOptions }
+
+import imageSetsNormalization from './image-sets-normalization.js'
+export { imageSetsNormalization }

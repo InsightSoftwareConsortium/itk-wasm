@@ -42,6 +42,16 @@ import structuredReportToTextNode from './structured-report-to-text-node.js'
 export { structuredReportToTextNode }
 
 
+import ImageSetsNormalizationNodeResult from './image-sets-normalization-node-result.js'
+export type { ImageSetsNormalizationNodeResult }
+
+import ImageSetsNormalizationNodeOptions from './image-sets-normalization-node-options.js'
+export type { ImageSetsNormalizationNodeOptions }
+
+import imageSetsNormalizationNode from './image-sets-normalization-node.js'
+export { imageSetsNormalizationNode }
+
+
 import ReadDicomTagsNodeResult from './read-dicom-tags-node-result.js'
 export type { ReadDicomTagsNodeResult }
 
