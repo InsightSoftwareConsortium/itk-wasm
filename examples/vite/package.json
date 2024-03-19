@@ -33,13 +33,13 @@
   "homepage": "https://github.com/InsightSoftwareConsortium/itk-wasm#readme",
   "dependencies": {
     "curry": "^1.2.0",
-    "itk-image-io": "^1.0.0-b.37",
-    "itk-mesh-io": "^1.0.0-b.37",
+    "itk-image-io": "^1.0.0-b.158",
+    "itk-mesh-io": "^1.0.0-b.158",
     "itk-wasm": "^1.0.0-b.37"
   },
   "devDependencies": {
     "cypress": "^13.2.0",
-    "start-server-and-test": "^1.15.2",
+    "start-server-and-test": "^2.0.3",
     "vite": "^4.0.5",
     "vite-plugin-static-copy": "^0.13.0"
   }
