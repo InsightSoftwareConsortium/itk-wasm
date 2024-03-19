@@ -23,7 +23,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-#include "discriminate-volume.cxx"
+#include "gdcmDiscriminateVolume.h"
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 
   ITK_WASM_PARSE(pipeline);
 
+  std::vector<gdcm::Directory::FilenamesType> volumes;
   gdcm::Scanner s;
 
   const gdcm::Tag t1(0x0020, 0x000d); // Study Instance UID
@@ -59,18 +60,26 @@ int main(int argc, char *argv[])
   gdcm::DiscriminateVolume dv;
   dv.ProcessIntoVolume(s);
 
-  std::vector<gdcm::Directory::FilenamesType> sortedFiles = dv.GetSortedFiles();
+  std::vector<gdcm::Directory::FilenamesType> sorted = dv.GetSortedFiles();
+  for (gdcm::Directory::FilenamesType &volume : sorted)
+  {
+    volumes.push_back(volume);
+  }
+
+  std::vector<gdcm::Directory::FilenamesType> unsorted = dv.GetUnsortedFiles();
+  for (gdcm::Directory::FilenamesType fileGroups : unsorted)
+  {
+    volumes.push_back(fileGroups);
+  }
 
   rapidjson::Document imageSetsJson;
   rapidjson::Document::AllocatorType &allocator = imageSetsJson.GetAllocator();
   imageSetsJson.SetObject();
 
-  int groupId = 0;
   for (
-      std::vector<gdcm::Directory::FilenamesType>::const_iterator fileNames = sortedFiles.begin();
-      fileNames != sortedFiles.end(); ++fileNames)
+      std::vector<gdcm::Directory::FilenamesType>::const_iterator fileNames = volumes.begin();
+      fileNames != volumes.end(); ++fileNames)
   {
-    groupId++;
     rapidjson::Value sortedFileNameArray(rapidjson::kArrayType);
 
     for (
@@ -83,7 +92,7 @@ int main(int argc, char *argv[])
     }
 
     std::string fileName = fileNames->front();
-    const char* studyInstanceUID = s.GetValue(fileName.c_str(), t1);
+    const char *studyInstanceUID = s.GetValue(fileName.c_str(), t1);
 
     rapidjson::Value groupIdKey(studyInstanceUID, allocator);
     imageSetsJson.AddMember(groupIdKey, sortedFileNameArray, allocator);

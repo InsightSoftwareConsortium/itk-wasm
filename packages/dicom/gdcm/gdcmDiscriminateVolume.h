@@ -1,3 +1,38 @@
+/*=========================================================================
+
+  Program: GDCM (Grassroots DICOM). A DICOM library
+
+  Copyright (c) 2006-2011 Mathieu Malaterre
+  All rights reserved.
+  See Copyright.txt or http://gdcm.sourceforge.net/Copyright.html for details.
+
+     This software is distributed WITHOUT ANY WARRANTY; without even
+     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+     PURPOSE.  See the above copyright notice for more information.
+
+=========================================================================*/
+
+/*=========================================================================
+
+ *  Copyright NumFOCUS
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         https://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
+#ifndef DISCRIMINATE_VOLUME_H
+#define DISCRIMINATE_VOLUME_H
+
 #include "gdcmScanner.h"
 #include "gdcmTesting.h"
 #include "gdcmIPPSorter.h"
@@ -220,45 +255,4 @@ namespace gdcm
 
 } // namespace gdcm
 
-// int main(int argc, char *argv[])
-// {
-//     std::string dir1;
-//     if (argc < 2)
-//     {
-//         const char *extradataroot = nullptr;
-// #ifdef GDCM_BUILD_TESTING
-//         extradataroot = gdcm::Testing::GetDataExtraRoot();
-// #endif
-//         if (!extradataroot)
-//         {
-//             return 1;
-//         }
-//         dir1 = extradataroot;
-//         dir1 += "/gdcmSampleData/ForSeriesTesting/VariousIncidences/ST1";
-//     }
-//     else
-//     {
-//         dir1 = argv[1];
-//     }
-
-//     gdcm::Directory d;
-//     d.Load(dir1, true); // recursive !
-
-//     gdcm::Scanner s;
-//     s.AddTag(gdcm::t1);
-//     s.AddTag(gdcm::t2);
-//     s.AddTag(gdcm::t3);
-//     s.AddTag(gdcm::t4);
-//     bool b = s.Scan(d.GetFilenames());
-//     if (!b)
-//     {
-//         std::cerr << "Scanner failed" << std::endl;
-//         return 1;
-//     }
-
-//     gdcm::DiscriminateVolume dv;
-//     dv.ProcessIntoVolume(s);
-//     dv.Print(std::cout);
-
-//     return 0;
-// }
+#endif // DISCRIMINATE_VOLUME_H
