@@ -44,6 +44,8 @@
     "itk-wasm": "workspace:^"
   },
   "devDependencies": {
+    "@itk-viewer/element": "^0.2.12",
+    "@itk-viewer/io": "^0.1.8",
     "@itk-wasm/dicom-build": "workspace:*",
     "@itk-wasm/image-io": "workspace:*",
     "@shoelace-style/shoelace": "^2.12.0",

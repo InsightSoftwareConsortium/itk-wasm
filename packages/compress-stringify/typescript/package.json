@@ -44,6 +44,8 @@
     "itk-wasm": "workspace:^"
   },
   "devDependencies": {
+    "@itk-viewer/element": "^0.2.12",
+    "@itk-viewer/io": "^0.1.8",
     "@itk-wasm/compress-stringify-build": "workspace:*",
     "@shoelace-style/shoelace": "^2.5.2",
     "@types/node": "^20.2.5",

@@ -129,7 +129,7 @@ class ReadImageController  {
         const imageDetails = document.getElementById("readImage-image-details")
         imageDetails.innerHTML = `<pre>${globalThis.escapeHtml(JSON.stringify(image, globalThis.interfaceTypeJsonReplacer, 2))}</pre>`
         imageDetails.disabled = false
-        const imageOutput = document.getElementById('readImage-image-details')
+        loadImage(image, imageDetails)
       } catch (error) {
         globalThis.notify("Error while running pipeline", error.toString(), "danger", "exclamation-octagon")
         throw error

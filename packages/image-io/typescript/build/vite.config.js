@@ -22,7 +22,7 @@ export function generateConfig() {
       format: 'es'
     },
     optimizeDeps: {
-      exclude: ['itk-wasm', '@thewtex/zstddec']
+      exclude: ['itk-wasm', '@thewtex/zstddec', '@itk-viewer/io']
     },
     plugins: [
       // put lazy loaded JavaScript and Wasm bundles in dist directory

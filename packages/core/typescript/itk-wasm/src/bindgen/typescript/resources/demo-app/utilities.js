@@ -1,4 +1,5 @@
 import * as itk from 'itk-wasm'
+import { ItkWasmMultiscaleSpatialImage } from "@itk-viewer/io/ItkWasmMultiscaleSpatialImage.js";
 globalThis.itk = itk
 
 function downloadFile(content, filename) {
@@ -91,3 +92,41 @@ function applyInputParsedJson(inputElement, modelMap, parameterName) {
   }
 }
 globalThis.applyInputParsedJson = applyInputParsedJson
+
+
+function showImage(image, details) {
+  details.innerHTML = ''
+
+  const viewer = document.createElement('itk-viewer-2d')
+  viewer.style.width = '100%'
+  viewer.style.height = '26rem'
+  const multiImage = new ItkWasmMultiscaleSpatialImage(image);
+  // need to wait a tick due to bad setup flow in @itk-viewer/element
+  setTimeout(() => {
+    const viewerActor = viewer.getActor();
+    viewerActor.send({ type: "setImage", image: multiImage });
+  }, 0)
+
+  const imageInfo = document.createElement('pre')
+  imageInfo.innerHTML = escapeHtml(JSON.stringify(image, interfaceTypeJsonReplacer, 2))
+
+  details.appendChild(viewer)
+  details.appendChild(imageInfo)
+}
+
+function loadImage(image, details) {
+  if(!details.summary.startsWith('️🔎')) {
+    details.summary = '️🔎 ' + details.summary 
+  }
+  if(details.open) {
+    showImage(image, details)
+  }
+  if(details.showImageListener) {
+    details.removeEventListener('sl-show', details.showImageListener)
+  }
+  details.showImageListener = () => {
+    showImage(image, details)
+  }
+  details.addEventListener('sl-show', details.showImageListener)
+}
+globalThis.loadImage = loadImage
