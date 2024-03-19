@@ -40,7 +40,7 @@
   "devDependencies": {
     "cypress": "^13.2.0",
     "start-server-and-test": "^1.15.2",
-    "vite": "^4.0.5",
+    "vite": "^4.5.2",
     "vite-plugin-static-copy": "^0.13.0"
   }
 }
