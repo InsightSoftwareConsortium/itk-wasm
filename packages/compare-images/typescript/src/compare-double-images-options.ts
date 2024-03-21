@@ -3,7 +3,7 @@
 import { Image, WorkerPoolFunctionOption } from 'itk-wasm'
 
 interface CompareDoubleImagesOptions extends WorkerPoolFunctionOption {
-  /** Baseline images compare against */
+  /** Baseline images to compare against */
   baselineImages: Image[]
 
   /** Intensity difference for pixels to be considered different. */

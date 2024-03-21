@@ -43,7 +43,7 @@ CompareImages(itk::wasm::Pipeline & pipeline, const TImage * testImage)
 
   using InputImageType = itk::wasm::InputImage<ImageType>;
   std::vector<InputImageType> baselineImages;
-  pipeline.add_option("-b,--baseline-images", baselineImages, "Baseline images compare against")->required()->expected(1,-1)->type_name("INPUT_IMAGE");
+  pipeline.add_option("-b,--baseline-images", baselineImages, "Baseline images to compare against")->required()->expected(1,-1)->type_name("INPUT_IMAGE");
 
   itk::wasm::OutputTextStream metrics;
   pipeline.add_option("metrics", metrics, "Metrics for the baseline with the fewest number of pixels outside the tolerances.")->type_name("OUTPUT_JSON");

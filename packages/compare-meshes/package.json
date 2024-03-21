@@ -6,6 +6,8 @@
   "description": "Scripts to generate compare-meshes itk-wasm artifacts.",
   "type": "module",
   "itk-wasm": {
+    "emscripten-docker-image": "itkwasm/emscripten:latest",
+    "wasi-docker-image": "itkwasm/wasi:latest",
     "package-description": "Compare meshes and polydata for regression testing.",
     "typescript-package-name": "compare-meshes",
     "python-package-name": "compare-meshes",

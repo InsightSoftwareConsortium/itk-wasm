@@ -21,7 +21,7 @@ async def compare_double_images_async(
     :param test_image: The input test image
     :type  test_image: Image
 
-    :param baseline_images: Baseline images compare against
+    :param baseline_images: Baseline images to compare against
     :type  baseline_images: Image
 
     :param difference_threshold: Intensity difference for pixels to be considered different.
