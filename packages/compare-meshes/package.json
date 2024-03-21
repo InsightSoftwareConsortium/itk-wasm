@@ -1,0 +1,48 @@
+{
+  "name": "compare-meshes-build",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@8.15.1",
+  "description": "Scripts to generate compare-meshes itk-wasm artifacts.",
+  "type": "module",
+  "itk-wasm": {
+    "package-description": "Compare meshes and polydata for regression testing.",
+    "typescript-package-name": "compare-meshes",
+    "python-package-name": "compare-meshes",
+    "repository": "https://github.com/InsightSoftwareConsortium/itk-wasm"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "pnpm build:gen:typescript && pnpm build:gen:python",
+    "build:emscripten": "itk-wasm pnpm-script build:emscripten",
+    "build:emscripten:debug": "itk-wasm pnpm-script build:emscripten:debug",
+    "build:wasi": "itk-wasm pnpm-script build:wasi",
+    "build:wasi:debug": "itk-wasm pnpm-script build:wasi:debug",
+    "build:python:wasi": "itk-wasm pnpm-script build:python:wasi",
+    "bindgen:typescript": "itk-wasm pnpm-script bindgen:typescript",
+    "bindgen:python": "itk-wasm pnpm-script bindgen:python",
+    "build:gen:typescript": "itk-wasm pnpm-script build:gen:typescript",
+    "build:gen:python": "itk-wasm pnpm-script build:gen:python",
+    "build:micromamba": "itk-wasm pnpm-script build:micromamba",
+    "build:python:versionSync": "itk-wasm pnpm-script build:python:versionSync",
+    "publish:python": "itk-wasm pnpm-script publish:python",
+    "test": "pnpm test:data:download && pnpm build:gen:python && pnpm test:python",
+    "test:data:download": "dam download test/data test/data.tar.gz bafkreigpkk3pqcoqzjzcauogw6dml52yig3ksmcrobau5pkoictymizzri https://github.com/InsightSoftwareConsortium/itk-wasm/releases/download/itk-wasm-v1.0.0-b.163/create-itk-wasm-test-data.tar.gz https://bafybeiczuxeuma5cjuli5mtapqnjqypeaum5ikd45zcmfhtt2emp365tca.ipfs.w3s.link/ipfs/bafybeiczuxeuma5cjuli5mtapqnjqypeaum5ikd45zcmfhtt2emp365tca/create-itk-wasm-test-data.tar.gz https://ipfs.filebase.io/ipfs/QmcxyvUKnaoTTwUqEPXwp1sdcbrFh3XnnwckLKVRpctJx9",
+    "test:data:pack": "dam pack test/data test/data.tar.gz",
+    "test:python:wasi": "itk-wasm pnpm-script test:python:wasi",
+    "test:python:emscripten": "itk-wasm pnpm-script test:python:emscripten",
+    "test:python:dispatch": "itk-wasm pnpm-script test:python:emscripten",
+    "test:python": "itk-wasm pnpm-script test:python",
+    "test:wasi": "itk-wasm pnpm-script test:wasi"
+  },
+  "devDependencies": {
+    "@itk-wasm/dam": "^1.1.1",
+    "@thewtex/setup-micromamba": "^1.9.7",
+    "itk-wasm": "1.0.0-b.171"
+  },
+  "author": "Matt McCormick",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InsightSoftwareConsortium/itk-wasm"
+  }
+}
