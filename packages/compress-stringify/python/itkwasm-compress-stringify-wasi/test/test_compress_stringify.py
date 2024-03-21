@@ -13,7 +13,7 @@ def test_decompress_returns_what_was_compressed():
 def test_we_can_stringify_during_compression():
     data = bytes([222, 173, 190, 239])
     compressed_data = compress_stringify(data, compression_level=8, stringify=True)
-    assert compressed_data.decode() == 'data:base64,KLUv/SAEIQAA3q2+7w=='
+    assert compressed_data.decode() == 'data:application/zstd;base64,KLUv/SAEIQAA3q2+7w=='
     decompressed_data = parse_string_decompress(compressed_data, parse_string=True)
 
     assert decompressed_data[0] == 222

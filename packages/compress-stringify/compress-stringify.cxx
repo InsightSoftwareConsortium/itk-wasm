@@ -64,7 +64,7 @@ int compressStringify(itk::wasm::Pipeline & pipeline, itk::wasm::InputBinaryStre
 
   std::string inputBinary;
   inputBinary.assign( (std::istreambuf_iterator<char>(inputBinaryStream.Get()) ), 
-                      (std::istreambuf_iterator<char>()) ); 
+                      (std::istreambuf_iterator<char>()) );
 
 
   const size_t compressedBufferSize = ZSTD_compressBound(inputBinary.size());
@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
   int compressionLevel = 3;
   pipeline.add_option("-c,--compression-level", compressionLevel, "Compression level, typically 1-9");
 
-  std::string dataURLPrefix("data:base64,");
+  std::string dataURLPrefix("data:application/zstd;base64,");
   pipeline.add_option("-p,--data-url-prefix", dataURLPrefix, "dataURL prefix");
 
   ITK_WASM_PRE_PARSE(pipeline);
