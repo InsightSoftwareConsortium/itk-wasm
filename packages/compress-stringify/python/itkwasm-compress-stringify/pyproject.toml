@@ -51,6 +51,8 @@ path = "itkwasm_compress_stringify/_version.py"
 dependencies = [
   "pytest",
   "pytest-pyodide",
+  "itkwasm-compare-images",
+  "itkwasm-image-io",
 ]
 
 

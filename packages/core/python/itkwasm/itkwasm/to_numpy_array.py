@@ -37,7 +37,13 @@ def array_like_to_numpy_array(arr: ArrayLike) -> np.ndarray:
         return arr.get()
     return np.array(arr)
 
-def _buffer_to_numpy_array(component_type: Union[IntTypes, FloatTypes], buf):
+def array_like_to_bytes(arr: ArrayLike) -> bytes:
+    """Convert a numpy array-like to bytes."""
+    if hasattr(arr, 'tobytes'):
+        return arr.tobytes()
+    return array_like_to_numpy_array(arr).tobytes()
+
+def buffer_to_numpy_array(component_type: Union[IntTypes, FloatTypes], buf):
     if component_type == IntTypes.UInt8:
         return np.frombuffer(buf, dtype=np.uint8)
     elif component_type == IntTypes.Int8:
