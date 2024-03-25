@@ -27,9 +27,14 @@
     "build:micromamba": "itk-wasm pnpm-script build:micromamba",
     "build:python:versionSync": "itk-wasm pnpm-script build:python:versionSync",
     "publish:python": "itk-wasm pnpm-script publish:python",
-    "test": "pnpm test:data:download",
-    "test:data:download": "dam download test/data test/data.tar.gz bafybeigcvvf3ol3phmpevbin6ufumqfx65uxxthchqacxftxqpn67uxlxa https://github.com/InsightSoftwareConsortium/itk-wasm/releases/download/itk-wasm-v1.0.0-b.157/data.tar.gz https://bafybeiefbfd6kxcmwq6osnwu72gv6srzsnv6ys5omoodjlmaazx47mdhsq.ipfs.w3s.link/ipfs/bafybeiefbfd6kxcmwq6osnwu72gv6srzsnv6ys5omoodjlmaazx47mdhsq/data.tar.gz",
-    "test:data:pack": "dam pack test/data test/data.tar.gz"
+    "test": "pnpm test:data:download && pnpm build:gen:python && pnpm test:python",
+    "test:data:download": "dam download test/data test/data.tar.gz bafkreighj3av4jzkaap4niskoz3q3k5oxb3hszqqzimyfw66jxjf4x4jq4 https://github.com/InsightSoftwareConsortium/itk-wasm/releases/download/itk-wasm-v1.0.0-b.157/data.tar.gz https://bafybeiefbfd6kxcmwq6osnwu72gv6srzsnv6ys5omoodjlmaazx47mdhsq.ipfs.w3s.link/ipfs/bafybeiefbfd6kxcmwq6osnwu72gv6srzsnv6ys5omoodjlmaazx47mdhsq/data.tar.gz",
+    "test:data:pack": "dam pack test/data test/data.tar.gz",
+    "test:python:wasi": "itk-wasm pnpm-script test:python:wasi",
+    "test:python:emscripten": "itk-wasm pnpm-script test:python:emscripten",
+    "test:python:dispatch": "itk-wasm pnpm-script test:python:emscripten",
+    "test:python": "itk-wasm pnpm-script test:python",
+    "test:wasi": "itk-wasm pnpm-script test:wasi -- -V"
   },
   "license": "Apache-2.0",
   "devDependencies": {
