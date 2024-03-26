@@ -10,8 +10,9 @@ import numpy as np
 
 from itkwasm import InterfaceTypes, TextStream, BinaryStream, PipelineInput, PipelineOutput, Pipeline, TextFile, BinaryFile, Image, Mesh
 
-test_input_dir = Path(__file__).resolve().parent / 'input'
-test_baseline_dir = Path(__file__).resolve().parent / 'baseline'
+test_data_dir = Path(__file__).resolve().parent.parent.parent.parent / 'test' / 'data'
+test_input_dir = test_data_dir / 'input'
+test_baseline_dir = test_data_dir / 'baseline'
 
 
 def test_stdout_stderr():

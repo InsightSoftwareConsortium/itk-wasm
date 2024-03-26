@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scijava</groupId>
+    <artifactId>pom-scijava</artifactId>
+    <version>35.1.1</version>
+  </parent>
+
+  <groupId>org.itk.wasm</groupId>
+  <artifactId>itk-wasm</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+
+  <name>itk-wasm for Java</name>
+  <description>Java interface to itk-wasm WebAssembly modules.</description>
+  <url>https://github.com/InsightSoftwareConsortium/itk-wasm</url>
+  <inceptionYear>2023</inceptionYear>
+  <organization>
+    <name>ITK</name>
+    <url>https://itk.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Matt McCormick</name>
+      <url>https://github.com/thewtex</url>
+      <id>thewtex</id>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Curtis Rueden</name>
+      <url>https://github.com/ctrueden</url>
+      <properties><id>ctrueden</id></properties>
+    </contributor>
+  </contributors>
+
+  <mailingLists>
+    <mailingList>
+      <name>ITK Forum</name>
+      <archive>https://discourse.itk.org/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <scm>
+    <connection>scm:https://github.com/InsightSoftwareConsortium/itk-wasm</connection>
+    <developerConnection>scm:git@github.com:InsightSoftwareConsortium/itk-wasm</developerConnection>
+    <url>https://github.com/InsightSoftwareConsortium/itk-wasm</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/InsightSoftwareConsortium/itk-wasm/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/InsightSoftwareConsortium/itk-wasm/actions</url>
+  </ciManagement>
+
+  <properties>
+    <main-class>org.itk.wasm.Main</main-class>
+
+    <license.licenseName>apache_v2</license.licenseName>
+    <license.copyrightOwners>ITK developers.</license.copyrightOwners>
+    <license.projectName>Java bindings for itk-wasm.</license.projectName>
+
+    <wasmtime-java.version>0.14.0</wasmtime-java.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.github.kawamuray.wasmtime</groupId>
+      <artifactId>wasmtime-java</artifactId>
+      <version>${wasmtime-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.imglib2</groupId>
+      <artifactId>imglib2</artifactId>
+    </dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+  </dependencies>
+</project>

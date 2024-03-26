@@ -13,6 +13,7 @@ build-emscripten
 build-wasi
 src/io/internal/ImageIOIndex.ts
 src/io/internal/MeshIOIndex.ts
+wasi-build/
 
 dist/*
 !dist/dicom

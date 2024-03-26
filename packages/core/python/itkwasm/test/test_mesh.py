@@ -7,7 +7,7 @@ from dataclasses import asdict
 import numpy as np
 
 def test_mesh():
-    data = Path(__file__).absolute().parent / "input" / "cow.vtk"
+    data = Path(__file__).absolute().parent.parent.parent.parent / "test" / "data" / "input" / "cow.vtk"
     itk_mesh = itk.meshread(data)
 
     itk_mesh_dict = itk.dict_from_mesh(itk_mesh)

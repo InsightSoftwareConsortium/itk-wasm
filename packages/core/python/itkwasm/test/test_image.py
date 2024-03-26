@@ -7,7 +7,7 @@ from dataclasses import asdict
 import numpy as np
 
 def test_image():
-    data = Path(__file__).absolute().parent / "input" / "cthead1.png"
+    data = Path(__file__).absolute().parent.parent.parent.parent / "test" / "data" / "input" / "cthead1.png"
     itk_image = itk.imread(data, itk.UC)
     itk_image_dict = itk.dict_from_image(itk_image)
     itkwasm_image = Image(**itk_image_dict)
