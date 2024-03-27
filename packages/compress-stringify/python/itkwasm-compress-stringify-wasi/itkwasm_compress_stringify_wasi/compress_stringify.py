@@ -20,7 +20,7 @@ def compress_stringify(
     input: bytes,
     stringify: bool = False,
     compression_level: int = 3,
-    data_url_prefix: str = "data:base64,",
+    data_url_prefix: str = "data:application/zstd;base64,",
 ) -> bytes:
     """Given a binary, compress and optionally base64 encode.
 

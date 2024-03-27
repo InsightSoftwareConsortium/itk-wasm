@@ -3,7 +3,7 @@
 import { Image } from 'itk-wasm'
 
 interface CompareDoubleImagesNodeOptions {
-  /** Baseline images compare against */
+  /** Baseline images to compare against */
   baselineImages: Image[]
 
   /** Intensity difference for pixels to be considered different. */

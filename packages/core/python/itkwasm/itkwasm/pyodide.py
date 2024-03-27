@@ -12,7 +12,7 @@ from .text_stream import TextStream
 from .float_types import FloatTypes
 from .int_types import IntTypes
 from .json_compatible import JsonCompatible
-from .to_numpy_array import _buffer_to_numpy_array
+from .to_numpy_array import buffer_to_numpy_array
 
 @dataclass
 class JsPackageConfig:
@@ -72,12 +72,12 @@ def to_py(js_proxy):
         image_dict['imageType'] = image_type
         dimension = image_type.dimension
         component_type = image_type.componentType
-        image_dict['direction'] = _buffer_to_numpy_array(str(FloatTypes.Float64), image_dict['direction']).reshape((dimension, dimension))
+        image_dict['direction'] = buffer_to_numpy_array(str(FloatTypes.Float64), image_dict['direction']).reshape((dimension, dimension))
         shape = list(image_dict['size'])[::-1]
         if image_type.components > 1:
             shape.append(image_type.components)
         if image_dict['data'] is not None:
-            image_dict['data'] = _buffer_to_numpy_array(component_type, image_dict['data']).reshape(tuple(shape))
+            image_dict['data'] = buffer_to_numpy_array(component_type, image_dict['data']).reshape(tuple(shape))
         return Image(**image_dict)
     elif hasattr(js_proxy, "pointSetType"):
         point_set_dict = js_proxy.to_py()
@@ -87,9 +87,9 @@ def to_py(js_proxy):
         point_component_type = point_set_type.pointComponentType
         point_pixel_component_type = point_set_type.pointPixelComponentType
         if point_set_dict['points'] is not None:
-            point_set_dict['points'] = _buffer_to_numpy_array(point_component_type, point_set_dict['points']).reshape((-1, dimension))
+            point_set_dict['points'] = buffer_to_numpy_array(point_component_type, point_set_dict['points']).reshape((-1, dimension))
         if point_set_dict['pointData'] is not None:
-            point_set_dict['pointData'] = _buffer_to_numpy_array(point_pixel_component_type, point_set_dict['pointData'])
+            point_set_dict['pointData'] = buffer_to_numpy_array(point_pixel_component_type, point_set_dict['pointData'])
         return PointSet(**point_set_dict)
     elif hasattr(js_proxy, "meshType"):
         mesh_dict = js_proxy.to_py()
@@ -101,13 +101,13 @@ def to_py(js_proxy):
         cell_component_type = mesh_type.cellComponentType
         cell_pixel_component_type = mesh_type.cellPixelComponentType
         if mesh_dict['points'] is not None:
-            mesh_dict['points'] = _buffer_to_numpy_array(point_component_type, mesh_dict['points']).reshape((-1, dimension))
+            mesh_dict['points'] = buffer_to_numpy_array(point_component_type, mesh_dict['points']).reshape((-1, dimension))
         if mesh_dict['pointData'] is not None:
-            mesh_dict['pointData'] = _buffer_to_numpy_array(point_pixel_component_type, mesh_dict['pointData'])
+            mesh_dict['pointData'] = buffer_to_numpy_array(point_pixel_component_type, mesh_dict['pointData'])
         if mesh_dict['cells'] is not None:
-            mesh_dict['cells'] = _buffer_to_numpy_array(cell_component_type, mesh_dict['cells'])
+            mesh_dict['cells'] = buffer_to_numpy_array(cell_component_type, mesh_dict['cells'])
         if mesh_dict['cellData'] is not None:
-            mesh_dict['cellData'] = _buffer_to_numpy_array(cell_pixel_component_type, mesh_dict['cellData'])
+            mesh_dict['cellData'] = buffer_to_numpy_array(cell_pixel_component_type, mesh_dict['cellData'])
         return Mesh(**mesh_dict)
     elif hasattr(js_proxy, "polyDataType"):
         polydata_dict = js_proxy.to_py()
@@ -116,19 +116,19 @@ def to_py(js_proxy):
         point_pixel_component_type = polydata_type.pointPixelComponentType
         cell_pixel_component_type = polydata_type.cellPixelComponentType
         if polydata_dict['points'] is not None:
-            polydata_dict['points'] = _buffer_to_numpy_array(str(FloatTypes.Float32), polydata_dict['points']).reshape((-1, 3))
+            polydata_dict['points'] = buffer_to_numpy_array(str(FloatTypes.Float32), polydata_dict['points']).reshape((-1, 3))
         if polydata_dict['vertices'] is not None:
-            polydata_dict['vertices'] = _buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['vertices'])
+            polydata_dict['vertices'] = buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['vertices'])
         if polydata_dict['lines'] is not None:
-            polydata_dict['lines'] = _buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['lines'])
+            polydata_dict['lines'] = buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['lines'])
         if polydata_dict['polygons'] is not None:
-            polydata_dict['polygons'] = _buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['polygons'])
+            polydata_dict['polygons'] = buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['polygons'])
         if polydata_dict['triangleStrips'] is not None:
-            polydata_dict['triangleStrips'] = _buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['triangleStrips'])
+            polydata_dict['triangleStrips'] = buffer_to_numpy_array(str(IntTypes.UInt32), polydata_dict['triangleStrips'])
         if polydata_dict['pointData'] is not None:
-            polydata_dict['pointData'] = _buffer_to_numpy_array(point_pixel_component_type, polydata_dict['pointData'])
+            polydata_dict['pointData'] = buffer_to_numpy_array(point_pixel_component_type, polydata_dict['pointData'])
         if polydata_dict['cellData'] is not None:
-            polydata_dict['cellData'] = _buffer_to_numpy_array(cell_pixel_component_type, polydata_dict['cellData'])
+            polydata_dict['cellData'] = buffer_to_numpy_array(cell_pixel_component_type, polydata_dict['cellData'])
         return PolyData(**polydata_dict)
     elif hasattr(js_proxy, "path") and hasattr(js_proxy, "data") and isinstance(js_proxy.data, str):
         with open(js_proxy.path, 'w') as fp:
