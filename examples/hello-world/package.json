@@ -20,11 +20,11 @@
   "license": "Apache-2.0",
   "dependencies": {
     "fs-extra": "^11.1.0",
-    "itk-wasm": "^1.0.0-b.106"
+    "itk-wasm": "^1.0.0-b.169"
   },
   "devDependencies": {
     "cypress": "^13.2.0",
     "http-server": "^14.1.1",
-    "start-server-and-test": "^1.15.2"
+    "start-server-and-test": "^2.0.3"
   }
 }
