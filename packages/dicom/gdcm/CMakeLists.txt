@@ -10,6 +10,9 @@ include(${ITK_USE_FILE})
 add_executable(read-image-dicom-file-series read-image-dicom-file-series.cxx)
 target_link_libraries(read-image-dicom-file-series PUBLIC ${ITK_LIBRARIES})
 
+add_executable(image-sets-normalization image-sets-normalization.cxx)
+target_link_libraries(image-sets-normalization PUBLIC ${ITK_LIBRARIES})
+
 if (WASI)
   return()
 endif()

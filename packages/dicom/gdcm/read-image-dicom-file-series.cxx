@@ -20,6 +20,10 @@
 #include <fstream>
 #include <memory>
 
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/ostreamwrapper.h"
+
 #include "itkCommonEnums.h"
 #include "gdcmSerieHelper.h"
 #include "itkImageIOBase.h"
@@ -32,18 +36,7 @@
 #include "itkOutputImage.h"
 #include "itkOutputTextStream.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/ostreamwrapper.h"
-
-class CustomSerieHelper: public gdcm::SerieHelper
-{
-public:
-  void AddFileName(std::string const &fileName)
-  {
-    SerieHelper::AddFileName(fileName);
-  }
-};
+#include "SortSpatially.h"
 
 namespace itk
 {
@@ -210,60 +203,7 @@ int runPipeline(itk::wasm::Pipeline & pipeline, std::vector<std::string> & input
 
   if (!singleSortedSeries)
   {
-    std::unique_ptr<CustomSerieHelper> serieHelper(new CustomSerieHelper());
-    for (const std::string & fileName: inputFileNames)
-    {
-      serieHelper->AddFileName(fileName);
-    }
-    serieHelper->SetUseSeriesDetails(true);
-    // Add the default restrictions to refine the file set into multiple series.
-    serieHelper->CreateDefaultUniqueSeriesIdentifier();
-    using SeriesIdContainer = std::vector<std::string>;
-    SeriesIdContainer seriesUIDs;
-    // Accessing the first serie found (assume there is at least one)
-    gdcm::FileList * flist = serieHelper->GetFirstSingleSerieUIDFileSet();
-    while (flist)
-    {
-      if (!flist->empty()) // make sure we have at leat one serie
-      {
-        gdcm::File * file = (*flist)[0]; // for example take the first one
-
-        // Create its unique series ID
-        const std::string id( serieHelper->CreateUniqueSeriesIdentifier(file));
-
-        seriesUIDs.push_back(id);
-      }
-      flist = serieHelper->GetNextSingleSerieUIDFileSet();
-    }
-
-    using FileNamesContainer = std::vector<std::string>;
-    FileNamesContainer fileNames;
-    flist = serieHelper->GetFirstSingleSerieUIDFileSet();
-    const std::string serie = seriesUIDs[0];
-    bool found = false;
-    while (flist && !found)
-    {
-      if (!flist->empty()) // make sure we have at leat one serie
-      {
-        gdcm::File * file = (*flist)[0]; // for example take the first one
-        const std::string id( serieHelper->CreateUniqueSeriesIdentifier(file));
-        if (id == serie)
-        {
-          found = true; // we found a match
-          break;
-        }
-      }
-      flist = serieHelper->GetNextSingleSerieUIDFileSet();
-    }
-    serieHelper->OrderFileList(flist);
-
-    gdcm::FileList::iterator it;
-    for (it = flist->begin(); it != flist->end(); ++it)
-    {
-      gdcm::FileWithName * header = *it;
-      fileNames.push_back(header->filename);
-    }
-
+    std::vector<std::string> fileNames = sortSpatially(inputFileNames);
     reader->SetFileNames(fileNames);
   }
   else

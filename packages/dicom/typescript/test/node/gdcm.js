@@ -4,7 +4,7 @@ import glob from 'glob'
 import fs from 'fs-extra'
 
 import { IntTypes, PixelTypes, getMatrixElement } from 'itk-wasm'
-import { readImageDicomFileSeriesNode, readDicomTagsNode } from '../../dist/index-node.js'
+import { readImageDicomFileSeriesNode, readDicomTagsNode, imageSetsNormalizationNode } from '../../dist/index-node.js'
 
 const testDataInputDirectory = path.resolve('..', 'test', 'data', 'input')
 const testSeriesDirectory = path.resolve(testDataInputDirectory, 'DicomImageOrientationTest')
@@ -335,3 +335,10 @@ test('DICOM SOP: Nuclear Medicine Image.', async t => {
   ]))
   t.deepEqual(outputImage.size, [128, 128, 69])
 })
+
+test("imageSetsNormalizationNode returns image sets", async (t) => {
+  const { imageSetsMetadata } = await imageSetsNormalizationNode({
+    files: testDicomSeriesFiles,
+  });
+  t.assert(!!imageSetsMetadata);
+});
