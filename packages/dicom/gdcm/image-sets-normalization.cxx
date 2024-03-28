@@ -15,25 +15,25 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#include <unordered_set>
+
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+
 #include "itkPipeline.h"
 #include "itkOutputTextStream.h"
 
 #include "gdcmDiscriminateVolume.h"
 #include "DICOMTagReader.h"
 #include "Tags.h"
-
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
-
-#include <unordered_set>
+#include "SortSpatially.h"
 
 const std::string STUDY_INSTANCE_UID = "0020|000D";
 const std::string SERIES_INSTANCE_UID = "0020|000e";
 
 using File = std::string;
 using TagValues = itk::DICOMTagReader::TagMapType;
-using FileToTags = std::unordered_map<File, TagValues>;
 
 rapidjson::Value mapToJsonObj(const TagValues &tags, rapidjson::Document::AllocatorType &allocator)
 {
@@ -123,19 +123,15 @@ Volumes groupByVolume(const DicomFiles &dicomFiles)
   Volumes volumes;
   for (const DicomFile &dicomFile : dicomFiles)
   {
-    const auto &[file, tags] = dicomFile;
-    Volume *matchingVolume = nullptr;
-    for (Volume &volume : volumes)
-    {
+    const auto file = dicomFile.first;
+    const auto tags = dicomFile.second;
+    auto matchingVolume = std::find_if(volumes.begin(), volumes.end(), [&tags](const Volume &volume)
+                                       {
       const DicomFile fileInVolume = *volume.begin();
       const TagValues volumeTags = fileInVolume.second;
-      if (compareTags(volumeTags, tags, {SERIES_INSTANCE_UID}))
-      {
-        matchingVolume = &volume;
-        break;
-      }
-    }
-    if (matchingVolume)
+      return compareTags(volumeTags, tags, {SERIES_INSTANCE_UID}); });
+
+    if (matchingVolume != volumes.end())
     {
       matchingVolume->push_back(dicomFile);
     }
@@ -154,17 +150,11 @@ ImageSets groupByImageSet(const Volumes &volumes)
   for (const Volume &volume : volumes)
   {
     const auto volumeTags = volume.begin()->second;
-    Volumes *matchingImageSet = nullptr;
-    for (Volumes &volumes : imageSets)
-    {
+    auto matchingImageSet = std::find_if(imageSets.begin(), imageSets.end(), [&volumeTags](const Volumes &volumes)
+                                         {
       const TagValues imageSetTags = volumes.begin()->begin()->second;
-      if (compareTags(imageSetTags, volumeTags, {STUDY_INSTANCE_UID}))
-      {
-        matchingImageSet = &volumes;
-        break;
-      }
-    }
-    if (matchingImageSet)
+      return compareTags(imageSetTags, volumeTags, {STUDY_INSTANCE_UID}); });
+    if (matchingImageSet != imageSets.end())
     {
       matchingImageSet->push_back(volume);
     }
@@ -175,6 +165,33 @@ ImageSets groupByImageSet(const Volumes &volumes)
     }
   }
   return imageSets;
+}
+
+Volumes sortSpatially(Volumes &volumes)
+{
+  Volumes sortedVolumes;
+  for (Volume &volume : volumes)
+  {
+    std::vector<std::string> unsortedSerieFileNames;
+    for (const DicomFile &dicomFile : volume)
+    {
+      unsortedSerieFileNames.push_back(dicomFile.first);
+    }
+    std::vector<std::string> sortedFileNames = sortSpatially(unsortedSerieFileNames);
+
+    Volume sorted;
+    for (const auto &fileName : sortedFileNames)
+    {
+      const auto matchingDicomFile = std::find_if(volume.begin(), volume.end(), [&fileName](const DicomFile &dicomFile)
+                                                  { return dicomFile.first == fileName; });
+      if (matchingDicomFile != volume.end())
+      {
+        sorted.push_back(*matchingDicomFile);
+      }
+    }
+    sortedVolumes.push_back(sorted);
+  }
+  return sortedVolumes;
 }
 
 rapidjson::Document toJson(const ImageSets &imageSets)
@@ -271,7 +288,8 @@ int main(int argc, char *argv[])
   ITK_WASM_PARSE(pipeline);
 
   const DicomFiles dicomFiles = readTags(files);
-  const Volumes volumes = groupByVolume(dicomFiles);
+  Volumes volumes = groupByVolume(dicomFiles);
+  volumes = sortSpatially(volumes);
   const ImageSets imageSets = groupByImageSet(volumes);
 
   rapidjson::Document imageSetsJson = toJson(imageSets);
