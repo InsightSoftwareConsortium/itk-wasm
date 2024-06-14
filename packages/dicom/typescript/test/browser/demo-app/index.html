@@ -32,10 +32,9 @@
   <sl-tab-group>
     <sl-tab slot="nav" panel="applyPresentationStateToImage-panel">applyPresentationStateToImage</sl-tab>
     <sl-tab slot="nav" panel="readDicomEncapsulatedPdf-panel">readDicomEncapsulatedPdf</sl-tab>
+    <sl-tab slot="nav" panel="readSegmentation-panel">readSegmentation</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToHtml-panel">structuredReportToHtml</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToText-panel">structuredReportToText</sl-tab>
-    <sl-tab slot="nav" panel="readDicomTags-panel">readDicomTags</sl-tab>
-    <sl-tab slot="nav" panel="readImageDicomFileSeries-panel">readImageDicomFileSeries</sl-tab>
 
 
     <sl-tab-panel name="applyPresentationStateToImage-panel">
@@ -148,6 +147,55 @@
     <div id="readDicomEncapsulatedPdfOutputs">
       <sl-details disabled id="readDicomEncapsulatedPdf-pdf-binary-output-details" summary="pdfBinaryOutput: Output pdf file"></sl-details>
       <sl-button variant="neutral" outline name="pdf-binary-output-download" disabled>Download</sl-button>
+<br /><br />
+    </div>
+
+    </sl-tab-panel>
+
+
+    <sl-tab-panel name="readSegmentation-panel">
+
+    <small><i>Read DICOM segmentation objects</i></small><br /><br />
+
+    <div id="readSegmentationInputs"><form action="">
+      <sl-tooltip content="Use the Upload button to provide the dicomFile"><sl-details id="readSegmentation-dicom-file-details" summary="dicomFile: Input DICOM file" disabled></sl-details></sl-tooltip>
+      <label for="dicom-file-file"><sl-button name="dicom-file-file-button" required variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file"  name="dicom-file-file" style="display: none"/>
+<br /><br />
+      <sl-checkbox name="merge-segments">mergeSegments - <i>Merge segments into a single image</i></sl-checkbox>
+<br /><br />
+    <sl-divider></sl-divider>
+      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
+      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
+
+    </form></div>
+    <sl-divider></sl-divider>
+
+    <div id="readSegmentationOutputs">
+      <itk-image-details disabled id="readSegmentation-outputImage-details" summary="outputImage: dicom segmentation object as an image"></itk-image-details>
+      <sl-select id="readSegmentation-outputImage-output-format" placeholder="Format">
+        <sl-option value="bmp">bmp</sl-option>
+        <sl-option value="dcm">dcm</sl-option>
+        <sl-option value="gipl">gipl</sl-option>
+        <sl-option value="hdf5">hdf5</sl-option>
+        <sl-option value="jpg">jpg</sl-option>
+        <sl-option value="lsm">lsm</sl-option>
+        <sl-option value="mnc">mnc</sl-option>
+        <sl-option value="mnc.gz">mnc.gz</sl-option>
+        <sl-option value="mgh">mgh</sl-option>
+        <sl-option value="mha">mha</sl-option>
+        <sl-option value="mrc">mrc</sl-option>
+        <sl-option value="nii">nii</sl-option>
+        <sl-option value="nii.gz">nii.gz</sl-option>
+        <sl-option value="png">png</sl-option>
+        <sl-option value="nrrd">nrrd</sl-option>
+        <sl-option value="png">png</sl-option>
+        <sl-option value="pic">pic</sl-option>
+        <sl-option value="tif">tif</sl-option>
+        <sl-option value="isq">isq</sl-option>
+        <sl-option value="fdf">fdf</sl-option>
+        <sl-option value="vtk">vtk</sl-option>
+      </sl-select>
+      <sl-button variant="neutral" outline name="outputImage-download" disabled>Download</sl-button>
 <br /><br />
     </div>
 
@@ -314,85 +362,6 @@ by Specific Character Set (0008,0005) to UTF-8</i></sl-checkbox>
     <div id="structuredReportToTextOutputs">
       <sl-details disabled id="structuredReportToText-output-text-details" summary="outputText: Output text file"></sl-details>
       <sl-button variant="neutral" outline name="output-text-download" disabled>Download</sl-button>
-<br /><br />
-    </div>
-
-    </sl-tab-panel>
-
-
-    <sl-tab-panel name="readDicomTags-panel">
-
-    <small><i>Read the tags from a DICOM file</i></small><br /><br />
-
-    <div id="readDicomTagsInputs"><form action="">
-      <sl-tooltip content="Use the Upload button to provide the dicomFile"><sl-details id="readDicomTags-dicom-file-details" summary="dicomFile: Input DICOM file." disabled></sl-details></sl-tooltip>
-      <label for="dicom-file-file"><sl-button name="dicom-file-file-button" required variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file"  name="dicom-file-file" style="display: none"/>
-<br /><br />
-      <label for="tags-to-read-file"><sl-button name="tags-to-read-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sp-button></label><input type="file" name="tags-to-read-file" style="display: none"/>
-      <sl-tooltip content="Use the Upload button to provide the tagsToRead"><sl-details id="readDicomTags-tags-to-read-details" summary="tagsToRead: A JSON object with a &quot;tags&quot; array of the tags to read. If not provided, all tags are read. Example tag: &quot;0008|103e&quot;." disabled></sl-details></sl-tooltip>
-<br /><br />
-    <sl-divider></sl-divider>
-      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
-      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
-
-    </form></div>
-    <sl-divider></sl-divider>
-
-    <div id="readDicomTagsOutputs">
-      <sl-details disabled id="readDicomTags-tags-details" summary="tags: Output tags in the file. JSON object an array of [tag, value] arrays. Values are encoded as UTF-8 strings."></sl-details>
-      <sl-button variant="neutral" outline name="tags-download" disabled>Download</sl-button>
-<br /><br />
-    </div>
-
-    </sl-tab-panel>
-
-
-    <sl-tab-panel name="readImageDicomFileSeries-panel">
-
-    <small><i>Read a DICOM image series and return the associated image volume</i></small><br /><br />
-
-    <div id="readImageDicomFileSeriesInputs"><form action="">
-      <sl-tooltip content="Use the Upload button to provide the inputImages"><sl-details id="readImageDicomFileSeries-input-images-details" summary="inputImages: File names in the series" disabled></sl-details></sl-tooltip>
-      <label for="input-images-file"><sl-button name="input-images-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file" multiple  name="input-images-file" style="display: none"/>
-<br /><br />
-      <sl-checkbox name="single-sorted-series">singleSortedSeries - <i>The input files are a single sorted series</i></sl-checkbox>
-<br /><br />
-    <sl-divider></sl-divider>
-      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
-      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
-
-    </form></div>
-    <sl-divider></sl-divider>
-
-    <div id="readImageDicomFileSeriesOutputs">
-      <itk-image-details disabled id="readImageDicomFileSeries-output-image-details" summary="outputImage: Output image volume"></itk-image-details>
-      <sl-select id="readImageDicomFileSeries-output-image-output-format" placeholder="Format">
-        <sl-option value="bmp">bmp</sl-option>
-        <sl-option value="dcm">dcm</sl-option>
-        <sl-option value="gipl">gipl</sl-option>
-        <sl-option value="hdf5">hdf5</sl-option>
-        <sl-option value="jpg">jpg</sl-option>
-        <sl-option value="lsm">lsm</sl-option>
-        <sl-option value="mnc">mnc</sl-option>
-        <sl-option value="mnc.gz">mnc.gz</sl-option>
-        <sl-option value="mgh">mgh</sl-option>
-        <sl-option value="mha">mha</sl-option>
-        <sl-option value="mrc">mrc</sl-option>
-        <sl-option value="nii">nii</sl-option>
-        <sl-option value="nii.gz">nii.gz</sl-option>
-        <sl-option value="png">png</sl-option>
-        <sl-option value="nrrd">nrrd</sl-option>
-        <sl-option value="png">png</sl-option>
-        <sl-option value="pic">pic</sl-option>
-        <sl-option value="tif">tif</sl-option>
-        <sl-option value="isq">isq</sl-option>
-        <sl-option value="fdf">fdf</sl-option>
-        <sl-option value="vtk">vtk</sl-option>
-      </sl-select>
-      <sl-button variant="neutral" outline name="output-image-download" disabled>Download</sl-button>
-<br /><br />
-      <sl-details disabled id="readImageDicomFileSeries-sorted-filenames-details" summary="sortedFilenames: Output sorted filenames"></sl-details>
-      <sl-button variant="neutral" outline name="sorted-filenames-download" disabled>Download</sl-button>
 <br /><br />
     </div>
 

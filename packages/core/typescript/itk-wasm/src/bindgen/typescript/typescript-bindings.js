@@ -36,6 +36,7 @@ function typescriptBindings(
   options,
   forNode = false
 ) {
+  console.log('wasmBinaries: ', wasmBinaries);
   // index module
   let indexContent = ''
   let indexCommonContent = "export { default as version } from './version.js'\n"

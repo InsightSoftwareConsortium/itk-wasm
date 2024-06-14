@@ -34,7 +34,7 @@ RUN curl -L https://api.github.com/repos/facebook/zstd/tarball/${zstd_GIT_TAG} |
   rm -rf zstd-build zstd
 
 # tag commit date: 2024-05-21
-ENV ITK_GIT_TAG d03c2616856b28f708002cd1eff9b79660c7c9b0
+ENV ITK_GIT_TAG 9e573e1f762093e9191195a7de8b3e57c8f2d589
 ENV ITK_GIT_BRANCH itkwasm-2024-06-06
 RUN git clone --branch $ITK_GIT_BRANCH --single-branch --depth 1 https://github.com/jadh4v/ITK.git && \
   sed -i -e '/^option(OPJ_USE_THREAD/c\option(OPJ_USE_THREAD "use threads" OFF)' \
@@ -45,7 +45,7 @@ RUN git clone --branch $ITK_GIT_BRANCH --single-branch --depth 1 https://github.
 RUN sed -i -e '/^set(DCMTK_GIT_REPOSITORY/c\set(DCMTK_GIT_REPOSITORY "https://github.com/jadh4v/DCMTK.git")' \
     /ITK/Modules/ThirdParty/DCMTK/DCMTKGitTag.cmake
 
-RUN sed -i -e '/^set(DCMTK_GIT_TAG/c\set(DCMTK_GIT_TAG "e356f2929f84567603e39a3191d2ad5159adb703")' \
+RUN sed -i -e '/^set(DCMTK_GIT_TAG/c\set(DCMTK_GIT_TAG "62ebb7bb6e9ffb5311ff0f7baaa935b9b85296ec")' \
     /ITK/Modules/ThirdParty/DCMTK/DCMTKGitTag.cmake
 
 RUN if test -e $WASI_SDK_PATH/share/cmake/wasi-sdk.cmake; then sed -i '/cmake_minimum_required/d' $WASI_SDK_PATH/share/cmake/wasi-sdk.cmake; fi

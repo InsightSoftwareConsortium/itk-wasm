@@ -18,8 +18,7 @@ if (!params.has('functionName')) {
 }
 import './apply-presentation-state-to-image-controller.js'
 import './read-dicom-encapsulated-pdf-controller.js'
+import './read-segmentation-controller.js'
 import './structured-report-to-html-controller.js'
 import './structured-report-to-text-controller.js'
-import './read-dicom-tags-controller.js'
-import './read-image-dicom-file-series-controller.js'
 

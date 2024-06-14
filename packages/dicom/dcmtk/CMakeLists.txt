@@ -1,6 +1,8 @@
 find_package(ITK REQUIRED
   COMPONENTS
     ITKDCMTK
+    ITKLabelMap
+    ITKThresholding
     WebAssemblyInterface
   )
 include(${ITK_USE_FILE})
@@ -27,7 +29,12 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(dcmqi_lib)
 
-set(DCMQI_INCLUDE_DIR "${dcmqi_lib_SOURCE_DIR}/include")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
+
+list(APPEND DCMQI_INCLUDE_DIRS "${dcmqi_lib_SOURCE_DIR}/include" "${dcmqi_lib_SOURCE_DIR}/jsoncpp" "${dcmqi_lib_BINARY_DIR}/include")
+include_directories(${DCMQI_INCLUDE_DIRS})
+#include_directories("${dcmqi_lib_SOURCE_DIR}/jsoncpp")
+#include_directories("${dcmqi_lib_BINARY_DIR}/include")
 
 add_executable(structured-report-to-text structured-report-to-text.cxx)
 target_link_libraries(structured-report-to-text PUBLIC ${ITK_LIBRARIES})
@@ -47,3 +54,8 @@ target_link_libraries(structured-report-to-html PUBLIC ${ITK_LIBRARIES})
 
 add_executable(read-dicom-encapsulated-pdf read-dicom-encapsulated-pdf.cxx)
 target_link_libraries(read-dicom-encapsulated-pdf PUBLIC ${ITK_LIBRARIES})
+
+add_executable(read-segmentation read-segmentation.cxx)
+target_link_libraries(read-segmentation PUBLIC ${ITK_LIBRARIES} dcmqi)
+
+# add_test(NAME read-segmentation-help COMMAND read-segmentation --help)
