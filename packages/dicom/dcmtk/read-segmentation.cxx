@@ -15,9 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-// CLP includes
-// #include "dcmqi/segimage2itkimageCLP.h"
-// #include "itkSmartPointer.h"
 
 // DCMQI includes
 // #undef HAVE_SSTREAM // Avoid redefinition warning
@@ -34,6 +31,7 @@
 // ITK-wasm includes
 #include "itkPipeline.h"
 #include "itkOutputImage.h"
+#include "itkOutputTextStream.h"
 
 typedef dcmqi::Helper helper;
 constexpr unsigned int Dimension = 3;
@@ -41,7 +39,12 @@ using PixelType = short;
 using ScalarImageType = itk::Image<PixelType, Dimension>;
 using VectorImageType = itk::VectorImage<PixelType, Dimension>;
 
-int runPipeline(itk::wasm::Pipeline & pipeline, const std::string & inputSEGFileName, itk::wasm::OutputImage<VectorImageType> outputImage, const bool mergeSegments)
+int runPipeline(
+  itk::wasm::Pipeline & pipeline,
+  const std::string & inputSEGFileName,
+  itk::wasm::OutputImage<VectorImageType> outputImage,
+  itk::wasm::OutputTextStream& outputMetaInfoJSON,
+  const bool mergeSegments)
 {
 #if !defined(NDEBUG) || defined(_DEBUG)
   // Display DCMTK debug, warning, and error logs in the console
@@ -56,7 +59,7 @@ int runPipeline(itk::wasm::Pipeline & pipeline, const std::string & inputSEGFile
   DcmRLEDecoderRegistration::registerCodecs();
 
   DcmFileFormat sliceFF;
-  std::cout << "Loading DICOM SEG file " << inputSEGFileName << std::endl;
+  // std::cout << "Loading DICOM SEG file " << inputSEGFileName << std::endl;
   CHECK_COND(sliceFF.loadFile(inputSEGFileName.c_str()));
   DcmDataset* dataset = sliceFF.getDataset();
 
@@ -71,22 +74,25 @@ int runPipeline(itk::wasm::Pipeline & pipeline, const std::string & inputSEGFile
       return EXIT_FAILURE;
     }
 
-/*
-  using ImageToVectorImageFilterType = itk::ComposeImageFilter<ScalarImageType>;
-  auto imageToVectorImageFilter = ImageToVectorImageFilterType::New();
-  imageToVectorImageFilter->SetInput(0, image0);
-  imageToVectorImageFilter->SetInput(1, image1);
-  imageToVectorImageFilter->SetInput(2, image2);
-  imageToVectorImageFilter->Update();
-
-  VectorImageType::Pointer vectorImage = imageToVectorImageFilter->GetOutput();
-  */
-
-    itk::SmartPointer<ScalarImageType> itkImage = converter.begin();
-    if (itkImage)
+    using ImageToVectorImageFilterType = itk::ComposeImageFilter<ScalarImageType>;
+    auto imageToVectorImageFilter = ImageToVectorImageFilterType::New();
+    int inputNumber = 0;
+    for (auto itkImage = converter.begin(); itkImage != nullptr; itkImage = converter.next()) 
     {
-      // outputImage.Set(itkImage);
-      return EXIT_SUCCESS;
+      imageToVectorImageFilter->SetInput(inputNumber++, itkImage);
+    }
+    imageToVectorImageFilter->Update();
+    std::cout << "SDJ total scalar images: " << inputNumber << std::endl;
+
+    VectorImageType::Pointer vectorImage = imageToVectorImageFilter->GetOutput();
+    itk::Index<3> idx0;
+    idx0.Fill(0);
+    std::cout << "vectorImage->GetPixel(0) = " << vectorImage->GetPixel(idx0) << std::endl;
+    if (vectorImage)
+    {
+        outputImage.Set(vectorImage);
+        outputMetaInfoJSON.Get() << metaInfo.c_str();
+        return EXIT_SUCCESS;
     }
   }
   catch (int e)
@@ -108,13 +114,16 @@ int main(int argc, char * argv[])
   itk::wasm::OutputImage<VectorImageType> outputImage;
   pipeline.add_option("outputImage", outputImage, "dicom segmentation object as an image")->required()->type_name("OUTPUT_IMAGE");
 
+  itk::wasm::OutputTextStream outputMetaInfoJSON;
+  pipeline.add_option("output-meta-info-json", outputMetaInfoJSON, "Output overlay information")->type_name("OUTPUT_JSON");
+
   bool mergeSegments{false};
   pipeline.add_flag("--merge-segments", mergeSegments, "Merge segments into a single image");
 
   ITK_WASM_PARSE(pipeline);
 
   // Pipeline code goes here
-  runPipeline(pipeline, dicomFileName, outputImage, mergeSegments);
+  runPipeline(pipeline, dicomFileName, outputImage, outputMetaInfoJSON, mergeSegments);
 
   return EXIT_SUCCESS;
 }

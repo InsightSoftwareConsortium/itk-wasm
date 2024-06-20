@@ -15,9 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-// CLP includes
-// #include "dcmqi/segimage2itkimageCLP.h"
-// #include "itkSmartPointer.h"
 
 // DCMQI includes
 #include "dcmqi/Itk2DicomConverter.h"
@@ -29,34 +26,57 @@
 #include "dcmtk/oflog/configrt.h"
 
 #include "itkPipeline.h"
-#include "itkOutputImage.h"
-#include "itkVectorImage.h"
+#include "itkInputImage.h"
+#include "itkOutputBinaryStream.h"
+#include "itkSupportInputImageTypes.h"
 
-typedef dcmqi::Helper helper;
-constexpr unsigned int Dimension = 3;
-using PixelType = short;
-using ScalarImageType = itk::Image<PixelType, Dimension>;
-using VectorImageType = itk::VectorImage<PixelType, Dimension>;
-int runPipeline(itk::wasm::Pipeline & pipeline, itk::wasm::InputImage<ImageType> inputImage, const std::string & outputDICOMFilename)
+template <typename TImage>
+int writeSegmentation(itk::wasm::Pipeline &pipeline, const TImage * inputImage)
 {
-  return EXIT_FAILURE;
-}
+  using ImageType = TImage;
+  constexpr unsigned int Dimension = ImageType::ImageDimension;
+  using PixelType = typename ImageType::PixelType;
 
-int main(int argc, char * argv[])
-{
-  itk::wasm::Pipeline pipeline("write-segmentation", "Write segmentation image as DICOM object", argc, argv);
+  pipeline.get_option("input-image")->required()->type_name("INPUT_IMAGE");
 
-  std::string dicomFileName;
-  pipeline.add_option("dicom-file", dicomFileName, "Input DICOM file")->required()->check(CLI::ExistingFile)->type_name("INPUT_BINARY_FILE");
+  std::string inputRefDicomSeries = 0;
+  pipeline.add_option("input-ref-dicom-series", inputRefDicomSeries, "input reference dicom series over which the segmentation was created")->required();
 
-  itk::wasm::OutputImage<ImageType> outputImage;
-  pipeline.add_option("outputImage", outputImage, "dicom segmentation object as an image")->required()->type_name("OUTPUT_IMAGE");
+  // itk::wasm::OutputBinaryStream outputDicomFile;
+  // pipeline.add_option("output-dicom-file", outputDicomFile, "written dicom segfile")->required()->type_name("OUTPUT_BINARY_STREAM");
+  std::string outputDicomFile;
+  pipeline.add_option("output-dicom-file", outputDicomFile, "written dicom segfile")->required()->type_name("OUTPUT_BINARY_FILE");
 
   ITK_WASM_PARSE(pipeline);
 
   // Pipeline code goes here
-  runPipeline(pipeline, dicomFileName, outputImage);
 
   return EXIT_SUCCESS;
 }
-  
+
+template <typename TImage>
+class PipelineFunctor
+{
+public:
+  int operator()(itk::wasm::Pipeline &pipeline)
+  {
+    using ImageType = TImage;
+
+    itk::wasm::InputImage<ImageType> inputImage;
+    pipeline.add_option("input-image", inputImage, "input segmentation image to write")->type_name("INPUT_IMAGE");
+
+    ITK_WASM_PRE_PARSE(pipeline);
+
+    typename ImageType::ConstPointer inputImageRef = inputImage.Get();
+    return writeSegmentation<ImageType>(pipeline, inputImageRef);
+  }
+};
+
+int main(int argc, char * argv[])
+{
+  itk::wasm::Pipeline pipeline("write-segmentation", "Write DICOM segmentation object", argc, argv);
+
+  return itk::wasm::SupportInputImageTypes<PipelineFunctor,
+    int16_t>
+    ::Dimensions<2U, 3U>("input-image", pipeline);
+}
