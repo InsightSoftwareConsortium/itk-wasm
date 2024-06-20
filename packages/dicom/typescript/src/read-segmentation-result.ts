@@ -1,10 +1,13 @@
 // Generated file. To retain edits, remove this comment.
 
-import { Image, WorkerPoolFunctionResult } from 'itk-wasm'
+import { Image, JsonCompatible, WorkerPoolFunctionResult } from 'itk-wasm'
 
 interface ReadSegmentationResult extends WorkerPoolFunctionResult {
   /** dicom segmentation object as an image */
-  outputImage: Image
+  segImage: Image
+
+  /** Output overlay information */
+  metaInfo: JsonCompatible
 
 }
 

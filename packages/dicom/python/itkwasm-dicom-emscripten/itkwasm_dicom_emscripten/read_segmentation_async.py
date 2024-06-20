@@ -19,25 +19,22 @@ from itkwasm import (
 
 async def read_segmentation_async(
     dicom_file: os.PathLike,
-    merge_segments: bool = False,
-) -> Image:
+) -> Tuple[Image, Any]:
     """Read DICOM segmentation objects
 
     :param dicom_file: Input DICOM file
     :type  dicom_file: os.PathLike
 
-    :param merge_segments: Merge segments into a single image
-    :type  merge_segments: bool
-
     :return: dicom segmentation object as an image
     :rtype:  Image
+
+    :return: Output overlay information
+    :rtype:  Any
     """
     js_module = await js_package.js_module
     web_worker = js_resources.web_worker
 
     kwargs = {}
-    if merge_segments:
-        kwargs["mergeSegments"] = to_js(merge_segments)
 
     outputs = await js_module.readSegmentation(to_js(BinaryFile(dicom_file)), webWorker=web_worker, noCopy=True, **kwargs)
 

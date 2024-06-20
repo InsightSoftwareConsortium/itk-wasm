@@ -32,9 +32,12 @@
   <sl-tab-group>
     <sl-tab slot="nav" panel="applyPresentationStateToImage-panel">applyPresentationStateToImage</sl-tab>
     <sl-tab slot="nav" panel="readDicomEncapsulatedPdf-panel">readDicomEncapsulatedPdf</sl-tab>
+    <sl-tab slot="nav" panel="readOverlappingSegmentation-panel">readOverlappingSegmentation</sl-tab>
     <sl-tab slot="nav" panel="readSegmentation-panel">readSegmentation</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToHtml-panel">structuredReportToHtml</sl-tab>
     <sl-tab slot="nav" panel="structuredReportToText-panel">structuredReportToText</sl-tab>
+    <sl-tab slot="nav" panel="writeOverlappingSegmentation-panel">writeOverlappingSegmentation</sl-tab>
+    <sl-tab slot="nav" panel="writeSegmentation-panel">writeSegmentation</sl-tab>
 
 
     <sl-tab-panel name="applyPresentationStateToImage-panel">
@@ -153,12 +156,12 @@
     </sl-tab-panel>
 
 
-    <sl-tab-panel name="readSegmentation-panel">
+    <sl-tab-panel name="readOverlappingSegmentation-panel">
 
     <small><i>Read DICOM segmentation objects</i></small><br /><br />
 
-    <div id="readSegmentationInputs"><form action="">
-      <sl-tooltip content="Use the Upload button to provide the dicomFile"><sl-details id="readSegmentation-dicom-file-details" summary="dicomFile: Input DICOM file" disabled></sl-details></sl-tooltip>
+    <div id="readOverlappingSegmentationInputs"><form action="">
+      <sl-tooltip content="Use the Upload button to provide the dicomFile"><sl-details id="readOverlappingSegmentation-dicom-file-details" summary="dicomFile: Input DICOM file" disabled></sl-details></sl-tooltip>
       <label for="dicom-file-file"><sl-button name="dicom-file-file-button" required variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file"  name="dicom-file-file" style="display: none"/>
 <br /><br />
       <sl-checkbox name="merge-segments">mergeSegments - <i>Merge segments into a single image</i></sl-checkbox>
@@ -170,9 +173,9 @@
     </form></div>
     <sl-divider></sl-divider>
 
-    <div id="readSegmentationOutputs">
-      <itk-image-details disabled id="readSegmentation-outputImage-details" summary="outputImage: dicom segmentation object as an image"></itk-image-details>
-      <sl-select id="readSegmentation-outputImage-output-format" placeholder="Format">
+    <div id="readOverlappingSegmentationOutputs">
+      <itk-image-details disabled id="readOverlappingSegmentation-seg-image-details" summary="segImage: dicom segmentation object as an image"></itk-image-details>
+      <sl-select id="readOverlappingSegmentation-seg-image-output-format" placeholder="Format">
         <sl-option value="bmp">bmp</sl-option>
         <sl-option value="dcm">dcm</sl-option>
         <sl-option value="gipl">gipl</sl-option>
@@ -195,7 +198,60 @@
         <sl-option value="fdf">fdf</sl-option>
         <sl-option value="vtk">vtk</sl-option>
       </sl-select>
-      <sl-button variant="neutral" outline name="outputImage-download" disabled>Download</sl-button>
+      <sl-button variant="neutral" outline name="seg-image-download" disabled>Download</sl-button>
+<br /><br />
+      <sl-details disabled id="readOverlappingSegmentation-meta-info-details" summary="metaInfo: Output overlay information"></sl-details>
+      <sl-button variant="neutral" outline name="meta-info-download" disabled>Download</sl-button>
+<br /><br />
+    </div>
+
+    </sl-tab-panel>
+
+
+    <sl-tab-panel name="readSegmentation-panel">
+
+    <small><i>Read DICOM segmentation objects</i></small><br /><br />
+
+    <div id="readSegmentationInputs"><form action="">
+      <sl-tooltip content="Use the Upload button to provide the dicomFile"><sl-details id="readSegmentation-dicom-file-details" summary="dicomFile: Input DICOM file" disabled></sl-details></sl-tooltip>
+      <label for="dicom-file-file"><sl-button name="dicom-file-file-button" required variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file"  name="dicom-file-file" style="display: none"/>
+<br /><br />
+    <sl-divider></sl-divider>
+      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
+      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
+
+    </form></div>
+    <sl-divider></sl-divider>
+
+    <div id="readSegmentationOutputs">
+      <itk-image-details disabled id="readSegmentation-seg-image-details" summary="segImage: dicom segmentation object as an image"></itk-image-details>
+      <sl-select id="readSegmentation-seg-image-output-format" placeholder="Format">
+        <sl-option value="bmp">bmp</sl-option>
+        <sl-option value="dcm">dcm</sl-option>
+        <sl-option value="gipl">gipl</sl-option>
+        <sl-option value="hdf5">hdf5</sl-option>
+        <sl-option value="jpg">jpg</sl-option>
+        <sl-option value="lsm">lsm</sl-option>
+        <sl-option value="mnc">mnc</sl-option>
+        <sl-option value="mnc.gz">mnc.gz</sl-option>
+        <sl-option value="mgh">mgh</sl-option>
+        <sl-option value="mha">mha</sl-option>
+        <sl-option value="mrc">mrc</sl-option>
+        <sl-option value="nii">nii</sl-option>
+        <sl-option value="nii.gz">nii.gz</sl-option>
+        <sl-option value="png">png</sl-option>
+        <sl-option value="nrrd">nrrd</sl-option>
+        <sl-option value="png">png</sl-option>
+        <sl-option value="pic">pic</sl-option>
+        <sl-option value="tif">tif</sl-option>
+        <sl-option value="isq">isq</sl-option>
+        <sl-option value="fdf">fdf</sl-option>
+        <sl-option value="vtk">vtk</sl-option>
+      </sl-select>
+      <sl-button variant="neutral" outline name="seg-image-download" disabled>Download</sl-button>
+<br /><br />
+      <sl-details disabled id="readSegmentation-meta-info-details" summary="metaInfo: Output overlay information"></sl-details>
+      <sl-button variant="neutral" outline name="meta-info-download" disabled>Download</sl-button>
 <br /><br />
     </div>
 
@@ -362,6 +418,76 @@ by Specific Character Set (0008,0005) to UTF-8</i></sl-checkbox>
     <div id="structuredReportToTextOutputs">
       <sl-details disabled id="structuredReportToText-output-text-details" summary="outputText: Output text file"></sl-details>
       <sl-button variant="neutral" outline name="output-text-download" disabled>Download</sl-button>
+<br /><br />
+    </div>
+
+    </sl-tab-panel>
+
+
+    <sl-tab-panel name="writeOverlappingSegmentation-panel">
+
+    <small><i>Write DICOM segmentation object</i></small><br /><br />
+
+    <div id="writeOverlappingSegmentationInputs"><form action="">
+      <label for="seg-image-file"><sl-button name="seg-image-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sp-button></label><input type="file" name="seg-image-file" style="display: none"/>
+      <sl-tooltip content="Use the Upload button to provide the segImage"><itk-image-details id="writeOverlappingSegmentation-seg-image-details" summary="segImage: dicom segmentation object as an image" disabled></itk-image-details></sl-tooltip>
+<br /><br />
+      <label for="meta-info-file"><sl-button name="meta-info-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sp-button></label><input type="file" name="meta-info-file" style="display: none"/>
+      <sl-tooltip content="Use the Upload button to provide the metaInfo"><sl-details id="writeOverlappingSegmentation-meta-info-details" summary="metaInfo: JSON file containing the meta-information that describesthe measurements to be encoded. See DCMQI documentation for details." disabled></sl-details></sl-tooltip>
+<br /><br />
+      <sl-tooltip content="Use the Upload button to provide the refDicomSeries"><sl-details id="writeOverlappingSegmentation-ref-dicom-series-details" summary="refDicomSeries: List of DICOM files that correspond to the originalimage that was segmented." disabled></sl-details></sl-tooltip>
+      <label for="ref-dicom-series-file"><sl-button name="ref-dicom-series-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file" multiple  name="ref-dicom-series-file" style="display: none"/>
+<br /><br />
+      <sl-checkbox name="skip-empty-slices">skipEmptySlices - <i>Skip empty slices while encoding segmentation image.By default, empty slices will not be encoded, resulting in a smaller output file size.</i></sl-checkbox>
+<br /><br />
+      <sl-checkbox name="use-labelid-as-segmentnumber">useLabelidAsSegmentnumber - <i>Use label IDs from ITK images asSegment Numbers in DICOM. Only works if label IDs are consecutively numbered starting from 1, otherwise conversion will fail.</i></sl-checkbox>
+<br /><br />
+      <sl-input required name="output-dicom-file" type="text" label="outputDicomFile" help-text="File name of the DICOM SEG object that will store theresult of conversion."></sl-input>
+    <sl-divider></sl-divider>
+      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
+      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
+
+    </form></div>
+    <sl-divider></sl-divider>
+
+    <div id="writeOverlappingSegmentationOutputs">
+      <sl-details disabled id="writeOverlappingSegmentation-output-dicom-file-details" summary="outputDicomFile: File name of the DICOM SEG object that will store theresult of conversion."></sl-details>
+      <sl-button variant="neutral" outline name="output-dicom-file-download" disabled>Download</sl-button>
+<br /><br />
+    </div>
+
+    </sl-tab-panel>
+
+
+    <sl-tab-panel name="writeSegmentation-panel">
+
+    <small><i>Write DICOM segmentation object</i></small><br /><br />
+
+    <div id="writeSegmentationInputs"><form action="">
+      <label for="seg-image-file"><sl-button name="seg-image-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sp-button></label><input type="file" name="seg-image-file" style="display: none"/>
+      <sl-tooltip content="Use the Upload button to provide the segImage"><itk-image-details id="writeSegmentation-seg-image-details" summary="segImage: dicom segmentation object as an image" disabled></itk-image-details></sl-tooltip>
+<br /><br />
+      <label for="meta-info-file"><sl-button name="meta-info-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sp-button></label><input type="file" name="meta-info-file" style="display: none"/>
+      <sl-tooltip content="Use the Upload button to provide the metaInfo"><sl-details id="writeSegmentation-meta-info-details" summary="metaInfo: JSON file containing the meta-information that describesthe measurements to be encoded. See DCMQI documentation for details." disabled></sl-details></sl-tooltip>
+<br /><br />
+      <sl-tooltip content="Use the Upload button to provide the refDicomSeries"><sl-details id="writeSegmentation-ref-dicom-series-details" summary="refDicomSeries: List of DICOM files that correspond to the originalimage that was segmented." disabled></sl-details></sl-tooltip>
+      <label for="ref-dicom-series-file"><sl-button name="ref-dicom-series-file-button" variant="primary" outline onclick="this.parentElement.nextElementSibling.click()">Upload</sl-button></label><input type="file" multiple  name="ref-dicom-series-file" style="display: none"/>
+<br /><br />
+      <sl-checkbox name="skip-empty-slices">skipEmptySlices - <i>Skip empty slices while encoding segmentation image.By default, empty slices will not be encoded, resulting in a smaller output file size.</i></sl-checkbox>
+<br /><br />
+      <sl-checkbox name="use-labelid-as-segmentnumber">useLabelidAsSegmentnumber - <i>Use label IDs from ITK images asSegment Numbers in DICOM. Only works if label IDs are consecutively numbered starting from 1, otherwise conversion will fail.</i></sl-checkbox>
+<br /><br />
+      <sl-input required name="output-dicom-file" type="text" label="outputDicomFile" help-text="File name of the DICOM SEG object that will store theresult of conversion."></sl-input>
+    <sl-divider></sl-divider>
+      <br /><sl-tooltip content="Load example input data. This will overwrite data any existing input data."><sl-button name="loadSampleInputs" variant="default" style="display: none;">Load sample inputs</sl-button></sl-tooltip>
+      <sl-button type="button" variant="success" name="run">Run</sl-button><br /><br />
+
+    </form></div>
+    <sl-divider></sl-divider>
+
+    <div id="writeSegmentationOutputs">
+      <sl-details disabled id="writeSegmentation-output-dicom-file-details" summary="outputDicomFile: File name of the DICOM SEG object that will store theresult of conversion."></sl-details>
+      <sl-button variant="neutral" outline name="output-dicom-file-download" disabled>Download</sl-button>
 <br /><br />
     </div>
 

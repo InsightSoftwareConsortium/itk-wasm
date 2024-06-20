@@ -1,10 +1,13 @@
 // Generated file. To retain edits, remove this comment.
 
-import { Image } from 'itk-wasm'
+import { Image, JsonCompatible } from 'itk-wasm'
 
 interface ReadSegmentationNodeResult {
   /** dicom segmentation object as an image */
-  outputImage: Image
+  segImage: Image
+
+  /** Output overlay information */
+  metaInfo: JsonCompatible
 
 }
 

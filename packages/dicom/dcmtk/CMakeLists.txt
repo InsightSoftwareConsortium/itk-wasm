@@ -19,7 +19,7 @@ set(DCMQI_SUPERBUILD OFF)
 set(DCMQI_BUILD_SLICER_EXTENSION OFF)
 set(DCMQI_BUILD_APPS OFF)
 set(DCMQI_BUILD_DOC OFF)
-set(BUILD_TESTING OFF)
+#set(DCMQI_BUILD_TESTING ON)
 set(DCMTK_DIR ${ITK_DIR}/Modules/ThirdParty/DCMTK/ITKDCMTK_ExtProject-build)
 FetchContent_Declare(
   dcmqi_lib
@@ -28,13 +28,12 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(dcmqi_lib)
+#set(BUILD_TESTING OFF)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 list(APPEND DCMQI_INCLUDE_DIRS "${dcmqi_lib_SOURCE_DIR}/include" "${dcmqi_lib_SOURCE_DIR}/jsoncpp" "${dcmqi_lib_BINARY_DIR}/include")
 include_directories(${DCMQI_INCLUDE_DIRS})
-#include_directories("${dcmqi_lib_SOURCE_DIR}/jsoncpp")
-#include_directories("${dcmqi_lib_BINARY_DIR}/include")
 
 add_executable(structured-report-to-text structured-report-to-text.cxx)
 target_link_libraries(structured-report-to-text PUBLIC ${ITK_LIBRARIES})
@@ -58,4 +57,52 @@ target_link_libraries(read-dicom-encapsulated-pdf PUBLIC ${ITK_LIBRARIES})
 add_executable(read-segmentation read-segmentation.cxx)
 target_link_libraries(read-segmentation PUBLIC ${ITK_LIBRARIES} dcmqi)
 
-# add_test(NAME read-segmentation-help COMMAND read-segmentation --help)
+add_executable(read-overlapping-segmentation read-overlapping-segmentation.cxx)
+target_link_libraries(read-overlapping-segmentation PUBLIC ${ITK_LIBRARIES} dcmqi)
+
+add_executable(write-segmentation write-segmentation.cxx)
+target_link_libraries(write-segmentation PUBLIC ${ITK_LIBRARIES} dcmqi)
+
+add_executable(write-overlapping-segmentation write-overlapping-segmentation.cxx)
+target_link_libraries(write-overlapping-segmentation PUBLIC ${ITK_LIBRARIES} dcmqi)
+
+add_test(
+  NAME read-segmentation_help
+  COMMAND read-segmentation --help
+)
+
+add_test(
+  NAME read-overlapping-segmentation_help
+  COMMAND read-overlapping-segmentation --help
+)
+
+add_test(
+  NAME write-segmentation_help
+  COMMAND write-segmentation --help
+)
+
+add_test(
+  NAME write-overlapping-segmentation_help
+  COMMAND write-overlapping-segmentation --help
+)
+
+add_test(
+  NAME write-segmentation_makeSEG
+  COMMAND write-segmentation
+    ${dcmqi_lib_SOURCE_DIR}/data/segmentations/liver_seg.nrrd
+    ${dcmqi_lib_SOURCE_DIR}/doc/examples/seg-example.json
+    ${CMAKE_CURRENT_SOURCE_DIR}/../test/data/output/write-read-overlapping-segmentation-output_makeSEG.dcm
+    --ref-dicom-series ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/01.dcm
+                       ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/02.dcm
+                       ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/03.dcm
+  )
+
+  add_test(
+  NAME write-read-overlapping-segmentation_makeSEG
+  COMMAND write-overlapping-segmentation
+    ${dcmqi_lib_SOURCE_DIR}/data/segmentations/partial_overlaps-combined.nrrd
+    ${dcmqi_lib_SOURCE_DIR}/doc/examples/seg-example_partial_overlaps.json
+    ${CMAKE_CURRENT_SOURCE_DIR}/../test/data/output/partial_overlaps.dcm
+    --ref-dicom-series ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/01.dcm ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/02.dcm ${dcmqi_lib_SOURCE_DIR}/data/segmentations/ct-3slice/03.dcm
+    -l
+  )

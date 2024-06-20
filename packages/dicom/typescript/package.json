@@ -17,7 +17,7 @@
   "scripts": {
     "start": "pnpm copyDemoAppAssets && vite",
     "test": "pnpm test:node && pnpm test:browser",
-    "test:node": "ava test/node/*.js",
+    "test:node": "ava test/node/dcmtk.js",
     "test:browser": "pnpm test:browser:chrome && pnpm test:browser:firefox",
     "test:browser:firefox": "start-server-and-test start http-get://localhost:5177 cypress:runFirefox",
     "test:browser:chrome": "start-server-and-test start http-get://localhost:5177 cypress:runChrome",

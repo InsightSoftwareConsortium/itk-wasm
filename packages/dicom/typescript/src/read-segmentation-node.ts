@@ -2,13 +2,13 @@
 
 import {
   Image,
+  JsonCompatible,
   InterfaceTypes,
   PipelineOutput,
   PipelineInput,
   runPipelineNode
 } from 'itk-wasm'
 
-import ReadSegmentationNodeOptions from './read-segmentation-node-options.js'
 import ReadSegmentationNodeResult from './read-segmentation-node-result.js'
 
 import path from 'path'
@@ -18,19 +18,18 @@ import { fileURLToPath } from 'url'
  * Read DICOM segmentation objects
  *
  * @param {string} dicomFile - Input DICOM file
- * @param {ReadSegmentationNodeOptions} options - options object
  *
  * @returns {Promise<ReadSegmentationNodeResult>} - result object
  */
 async function readSegmentationNode(
-  dicomFile: string,
-  options: ReadSegmentationNodeOptions = {}
+  dicomFile: string
 ) : Promise<ReadSegmentationNodeResult> {
 
   const mountDirs: Set<string> = new Set()
 
   const desiredOutputs: Array<PipelineOutput> = [
     { type: InterfaceTypes.Image },
+    { type: InterfaceTypes.JsonCompatible },
   ]
 
   mountDirs.add(path.dirname(dicomFile as string))
@@ -44,14 +43,14 @@ async function readSegmentationNode(
   mountDirs.add(path.dirname(dicomFileName))
 
   // Outputs
-  const outputImageName = '0'
-  args.push(outputImageName)
+  const segImageName = '0'
+  args.push(segImageName)
+
+  const metaInfoName = '1'
+  args.push(metaInfoName)
 
   // Options
   args.push('--memory-io')
-  if (options.mergeSegments) {
-    options.mergeSegments && args.push('--merge-segments')
-  }
 
   const pipelinePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'pipelines', 'read-segmentation')
 
@@ -65,7 +64,8 @@ async function readSegmentationNode(
   }
 
   const result = {
-    outputImage: outputs[0]?.data as Image,
+    segImage: outputs[0]?.data as Image,
+    metaInfo: outputs[1]?.data as JsonCompatible,
   }
   return result
 }

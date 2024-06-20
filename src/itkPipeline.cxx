@@ -207,7 +207,9 @@ Pipeline
 #ifndef ITK_WASM_NO_FILESYSTEM_IO
           std::cout << rang::fg::reset;
 #endif
-          std::cout << line.substr(loc) << std::endl;
+          if (loc != std::string::npos) {
+            std::cout << line.substr(loc) << std::endl;
+          }
         }
       } else if(optionGroup) {
         if (line == "") {
