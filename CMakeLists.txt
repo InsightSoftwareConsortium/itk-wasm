@@ -34,8 +34,8 @@ FetchContent_Declare(
   )
 
 set(CLI11_GIT_REPOSITORY "https://github.com/CLIUtils/CLI11")
-# v2.3.2
-set(CLI11_GIT_TAG "291c58789c031208f08f4f261a858b5b7083e8e2")
+# v2.4.2
+set(CLI11_GIT_TAG "6c7b07a878ad834957b98d0f9ce1dbe0cb204fc9")
 FetchContent_Declare(
   cli11
   GIT_REPOSITORY ${CLI11_GIT_REPOSITORY}
@@ -45,8 +45,8 @@ FetchContent_Declare(
 
 set(rang_GIT_REPOSITORY "https://github.com/agauniyal/rang.git")
 set(rang_GIT_REPOSITORY "https://github.com/thewtex/rang.git")
-# v3.2 + WASI
-set(rang_GIT_TAG "12a863f29c678b913b924102cf61a058a9eb4b4e")
+# v3.2 + WASI + cmake_minimum_required
+set(rang_GIT_TAG "e50d8673fdc1d053b1502752d937c4e76510958c")
 FetchContent_Declare(
   rang
   GIT_REPOSITORY ${rang_GIT_REPOSITORY}
