@@ -4341,10 +4341,6 @@ packages:
     resolution: {integrity: sha512-yrt0uRukqI9Q5s9HhzArxMNYvyU5CMbI1ddGzH0A4O3JWscnJug7J0RtY+RTl6nTHcqdrppNH7IRbnTXLZ79Rg==}
     hasBin: true
 
-  itk-wasm@1.0.0-b.173:
-    resolution: {integrity: sha512-SV2lfZ1mClWuSK/noaZgGj9jhroY4MZu19ci9pIucuyhoGdXrVSmWlPH/JYMDi9RP3BogmQwe9wfFc3X1dcEPg==}
-    hasBin: true
-
   itk-wasm@1.0.0-b.175:
     resolution: {integrity: sha512-6vhMXur95FwAkd7XyvH39VWAXyAK6DCKb1SWPvhcKwDYGdpqyLZtfWs0qQp0BkyLMLBuCOD4sxA7ENcvZZpWCg==}
     hasBin: true
@@ -7708,7 +7704,7 @@ snapshots:
 
   '@itk-wasm/htj2k@2.1.0':
     dependencies:
-      itk-wasm: 1.0.0-b.173
+      itk-wasm: 1.0.0-b.175
     transitivePeerDependencies:
       - debug
 
